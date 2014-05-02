@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="FSMIntegrationEndpoint" targetNamespace="http://soap.integration.fsm.comarch.com/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://soap.integration.fsm.comarch.com/">
+	<wsdl:types>
+		<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://soap.integration.fsm.comarch.com/">
+			<xs:element name="UpdateWorkOrder" type="tns:workOrderItem" />
+			<xs:element name="CloseWorkOrder" type="tns:workOrderItem" />
+			<xs:element name="SPCommand" type="tns:spCommand" />
+			<xs:element name="Result" type="tns:updateWorkOrderResponse" />
+
+			<xs:complexType name="workOrderItem">
+				<xs:sequence>
+					<xs:element name="sourceSystem" type="xs:string" />
+					<xs:element name="processId" type="xs:string" />
+					<xs:element name="processSignature" type="xs:string" />
+					<xs:element name="workOrderId" type="xs:string" />
+					<xs:element name="workOrderURL" type="xs:string" minOccurs="0" />
+					<xs:element name="status" type="xs:string" />
+					<xs:element name="tasks" type="tns:tasksList" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="tasksList">
+				<xs:sequence>
+					<xs:element name="task" type="tns:taskList" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="taskList">
+				<xs:sequence>
+					<xs:element name="taskId" type="xs:string" />
+					<xs:element name="status" type="xs:string" minOccurs="0" />
+					<xs:element name="realizationInterval" type="tns:timeInterval" minOccurs="0" />
+					<xs:element name="scheduleInterval" type="tns:timeInterval" minOccurs="0" />
+					<xs:element name="executor" type="tns:assignedExecutor" minOccurs="0" />
+					<xs:element name="finishDate" type="xs:dateTime" minOccurs="0" />
+					<xs:element name="location" type="tns:location" />
+					<xs:element name="inventory" type="tns:inventory" minOccurs="0" />
+					<xs:element name="customer" type="tns:customer" nillable="true" minOccurs="0" />
+					<xs:element name="attributes" type="tns:attributes" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="timeInterval">
+				<xs:sequence>
+					<xs:element name="dateFrom" type="xs:dateTime" />
+					<xs:element name="dateTo" type="xs:dateTime" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="inventory">
+				<xs:sequence>
+					<xs:element name="node" type="tns:node" nillable="true" minOccurs="0" />
+					<xs:element name="items" type="tns:items" nillable="true" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="node">
+				<xs:sequence>
+					<xs:element name="nodeId" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="items">
+				<xs:sequence>
+					<xs:element name="item" type="tns:item" nillable="false" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="item">
+				<xs:sequence>
+					<xs:element name="itemKey" type="tns:itemKey" />
+					<xs:element name="itemName" type="xs:string" minOccurs="0" />
+					<xs:element name="itemFullName" type="xs:string" minOccurs="0" />
+					<xs:element name="status" type="xs:string" minOccurs="0" />
+					<xs:element name="quantity" type="xs:double" minOccurs="0" />
+					<xs:element name="relatedItems" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="itemKey" type="tns:itemKey" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="attributes" type="tns:attributes" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="itemKey">
+				<xs:sequence>
+					<xs:element name="itemId" type="xs:string" minOccurs="0" />
+					<xs:element name="itemClass" type="xs:string" />
+					<xs:element name="itemType" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="attributes">
+				<xs:sequence>
+					<xs:element name="attribute" type="tns:additionalAttribute" nillable="false" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="additionalAttribute">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" />
+					<xs:element name="value" type="xs:string" maxOccurs="unbounded" />
+					<xs:element name="friendlyValue" type="xs:string" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="location">
+				<xs:sequence>
+					<xs:element name="locationId" type="xs:string" minOccurs="0" />
+
+					<xs:element name="administrationUnit" type="tns:administrationUnit" />
+					<xs:element name="cityAdministrationUnit" type="tns:administrationUnit" nillable="true" minOccurs="0" />
+
+					<xs:element name="cityId" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="cityName" type="xs:string" nillable="false" />
+
+					<xs:element name="streetId" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="streetName" type="xs:string" nillable="true" minOccurs="0" />
+
+					<xs:element name="buildingNo" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="flatNo" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="longitude" type="xs:decimal" nillable="true" minOccurs="0" />
+					<xs:element name="latitude" type="xs:decimal" nillable="true" minOccurs="0" />
+					<xs:element name="description" type="xs:string" nillable="true" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="administrationUnit">
+				<xs:sequence>
+					<xs:element name="id" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="level" type="xs:string" nillable="false" />
+					<xs:element name="name" type="xs:string" nillable="false" />
+					<xs:element name="administrationUnit" type="tns:administrationUnit" nillable="true" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="customerTypeEnum">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="INDIVIDUAL" />
+					<xs:enumeration value="BUSINESS" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:complexType name="customer">
+				<xs:sequence>
+					<xs:element name="customerId" type="xs:string" nillable="false" />
+					<xs:element name="customerType" type="tns:customerTypeEnum" nillable="false" />
+
+					<xs:element name="firstName" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="lastName" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="businessName" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="phoneNumber1" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="phoneNumber2" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="phoneNumber3" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="email" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="contacts" type="tns:contacts" nillable="true" minOccurs="0" />
+					<xs:element name="location" type="tns:location" nillable="true" minOccurs="0" />
+					<xs:element name="attributes" type="tns:attributes" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="contacts">
+				<xs:sequence>
+					<xs:element name="contact" type="tns:contact" nillable="false" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="contact">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" />
+					<xs:element name="value" type="xs:string" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="assignedExecutor">
+				<xs:sequence>
+					<xs:element name="executorId" type="xs:string" />
+					<xs:element name="executorName" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="updateWorkOrderResponse">
+				<xs:sequence>
+					<xs:element name="Code" type="xs:string" />
+					<xs:element name="Description" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="spCommand">
+				<xs:sequence>
+					<xs:element name="sourceSystem" type="xs:string" />
+					<xs:element name="processId" type="xs:string" />
+					<xs:element name="processSignature" type="xs:string" />
+					<xs:element name="workOrderId" type="xs:string" />
+					<xs:element name="workOrderURL" type="xs:string" minOccurs="0" />
+					<xs:element name="activityType" type="tns:activityTypeEnum" />
+					<xs:element name="customer" type="tns:customer" nillable="true" minOccurs="0" />
+					<xs:element name="items" type="tns:items" nillable="false" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:simpleType name="activityTypeEnum">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="A" />
+					<xs:enumeration value="S" />
+					<xs:enumeration value="R" />
+					<xs:enumeration value="T" />
+					<xs:enumeration value="C" />
+				</xs:restriction>
+			</xs:simpleType>
+
+			<xs:element name="ApplicationException" type="tns:ApplicationException" />
+			<xs:complexType name="ApplicationException">
+				<xs:sequence />
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="UpdateWorkOrder">
+		<wsdl:part element="tns:UpdateWorkOrder" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="CloseWorkOrder">
+		<wsdl:part element="tns:CloseWorkOrder" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="SPCommand">
+		<wsdl:part element="tns:SPCommand" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="updateWorkOrderResponse">
+		<wsdl:part element="tns:Result" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="ApplicationException">
+		<wsdl:part element="tns:ApplicationException" name="ApplicationException" />
+	</wsdl:message>
+	<wsdl:portType name="FSMIntegrationEndpoint">
+		<wsdl:operation name="updateWorkOrder">
+			<wsdl:input message="tns:UpdateWorkOrder" name="updateWorkOrder" />
+			<wsdl:output message="tns:updateWorkOrderResponse" name="updateWorkOrderResponse" />
+			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+		</wsdl:operation>
+		<wsdl:operation name="closeWorkOrder">
+			<wsdl:input message="tns:CloseWorkOrder" name="closeWorkOrder" />
+			<wsdl:output message="tns:updateWorkOrderResponse" name="closeWorkOrderResponse" />
+			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+		</wsdl:operation>
+		<wsdl:operation name="sendSPCommand">
+			<wsdl:input message="tns:SPCommand" name="sendSPCommand" />
+			<wsdl:output message="tns:updateWorkOrderResponse" name="SPCommandResponse" />
+			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="FSMIntegrationEndpointServiceSoapBinding" type="tns:FSMIntegrationEndpoint">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="updateWorkOrder">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="updateWorkOrder">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="updateWorkOrderResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ApplicationException">
+				<soap:fault name="ApplicationException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="closeWorkOrder">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="closeWorkOrder">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="closeWorkOrderResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ApplicationException">
+				<soap:fault name="ApplicationException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="sendSPCommand">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="sendSPCommand">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="SPCommandResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ApplicationException">
+				<soap:fault name="ApplicationException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="FSMIntegrationEndpointService">
+		<wsdl:port binding="tns:FSMIntegrationEndpointServiceSoapBinding" name="FSMIntegrationEndpointPort">
+			<soap:address location="http://localhost:8080/fsm-integration/fsm-integration-endpoint" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
