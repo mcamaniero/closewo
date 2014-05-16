@@ -40,13 +40,13 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class AdministrationUnit {
 
-    @XmlElementRef(name = "id", type = JAXBElement.class)
+    @XmlElementRef(name = "id", type = JAXBElement.class, required = false)
     protected JAXBElement<String> id;
     @XmlElement(required = true)
     protected String level;
     @XmlElement(required = true)
     protected String name;
-    @XmlElementRef(name = "administrationUnit", type = JAXBElement.class)
+    @XmlElementRef(name = "administrationUnit", type = JAXBElement.class, required = false)
     protected JAXBElement<AdministrationUnit> administrationUnit;
 
     /**

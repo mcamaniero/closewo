@@ -60,23 +60,23 @@ public class Customer {
     protected String customerId;
     @XmlElement(required = true)
     protected CustomerTypeEnum customerType;
-    @XmlElementRef(name = "firstName", type = JAXBElement.class)
+    @XmlElementRef(name = "firstName", type = JAXBElement.class, required = false)
     protected JAXBElement<String> firstName;
-    @XmlElementRef(name = "lastName", type = JAXBElement.class)
+    @XmlElementRef(name = "lastName", type = JAXBElement.class, required = false)
     protected JAXBElement<String> lastName;
-    @XmlElementRef(name = "businessName", type = JAXBElement.class)
+    @XmlElementRef(name = "businessName", type = JAXBElement.class, required = false)
     protected JAXBElement<String> businessName;
-    @XmlElementRef(name = "phoneNumber1", type = JAXBElement.class)
+    @XmlElementRef(name = "phoneNumber1", type = JAXBElement.class, required = false)
     protected JAXBElement<String> phoneNumber1;
-    @XmlElementRef(name = "phoneNumber2", type = JAXBElement.class)
+    @XmlElementRef(name = "phoneNumber2", type = JAXBElement.class, required = false)
     protected JAXBElement<String> phoneNumber2;
-    @XmlElementRef(name = "phoneNumber3", type = JAXBElement.class)
+    @XmlElementRef(name = "phoneNumber3", type = JAXBElement.class, required = false)
     protected JAXBElement<String> phoneNumber3;
-    @XmlElementRef(name = "email", type = JAXBElement.class)
+    @XmlElementRef(name = "email", type = JAXBElement.class, required = false)
     protected JAXBElement<String> email;
-    @XmlElementRef(name = "contacts", type = JAXBElement.class)
+    @XmlElementRef(name = "contacts", type = JAXBElement.class, required = false)
     protected JAXBElement<Contacts> contacts;
-    @XmlElementRef(name = "location", type = JAXBElement.class)
+    @XmlElementRef(name = "location", type = JAXBElement.class, required = false)
     protected JAXBElement<Location> location;
     protected Attributes attributes;
 

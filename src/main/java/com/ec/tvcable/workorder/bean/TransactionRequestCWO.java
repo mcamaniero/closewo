@@ -5,8 +5,8 @@ import javax.persistence.PersistenceContext;
 
 import org.switchyard.component.bean.Service;
 
-import com.ec.tvcable.workorder.InterfaceWorkCloseOrder;
 import com.ec.tvcable.workorder.jpa.YtblRequesCloseWorkOrder;
+import com.ec.tvcable.workorder.servicio.InterfaceWorkCloseOrder;
 
 @Service(InterfaceWorkCloseOrder.class)
 public class TransactionRequestCWO implements InterfaceWorkCloseOrder {

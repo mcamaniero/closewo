@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class Inventory {
 
-    @XmlElementRef(name = "node", type = JAXBElement.class)
+    @XmlElementRef(name = "node", type = JAXBElement.class, required = false)
     protected JAXBElement<Node> node;
-    @XmlElementRef(name = "items", type = JAXBElement.class)
+    @XmlElementRef(name = "items", type = JAXBElement.class, required = false)
     protected JAXBElement<Items> items;
 
     /**

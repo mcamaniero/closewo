@@ -25,11 +25,14 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _SpCommandCustomer_QNAME = new QName("", "customer");
     private final static QName _Result_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "Result");
     private final static QName _CloseWorkOrder_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "CloseWorkOrder");
     private final static QName _ApplicationException_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "ApplicationException");
     private final static QName _UpdateWorkOrder_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "UpdateWorkOrder");
     private final static QName _SPCommand_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "SPCommand");
+    private final static QName _InventoryNode_QNAME = new QName("", "node");
+    private final static QName _InventoryItems_QNAME = new QName("", "items");
     private final static QName _AdministrationUnitId_QNAME = new QName("", "id");
     private final static QName _AdministrationUnitAdministrationUnit_QNAME = new QName("", "administrationUnit");
     private final static QName _CustomerBusinessName_QNAME = new QName("", "businessName");
@@ -41,9 +44,6 @@ public class ObjectFactory {
     private final static QName _CustomerFirstName_QNAME = new QName("", "firstName");
     private final static QName _CustomerContacts_QNAME = new QName("", "contacts");
     private final static QName _CustomerPhoneNumber3_QNAME = new QName("", "phoneNumber3");
-    private final static QName _TaskListCustomer_QNAME = new QName("", "customer");
-    private final static QName _InventoryNode_QNAME = new QName("", "node");
-    private final static QName _InventoryItems_QNAME = new QName("", "items");
     private final static QName _LocationBuildingNo_QNAME = new QName("", "buildingNo");
     private final static QName _LocationStreetId_QNAME = new QName("", "streetId");
     private final static QName _LocationCityId_QNAME = new QName("", "cityId");
@@ -70,11 +70,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdateWorkOrderResponse }
+     * Create an instance of {@link Result }
      * 
      */
-    public UpdateWorkOrderResponse createUpdateWorkOrderResponse() {
-        return new UpdateWorkOrderResponse();
+    public Result createResult() {
+        return new Result();
     }
 
     /**
@@ -230,12 +230,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateWorkOrderResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "customer", scope = SpCommand.class)
+    public JAXBElement<Customer> createSpCommandCustomer(Customer value) {
+        return new JAXBElement<Customer>(_SpCommandCustomer_QNAME, Customer.class, SpCommand.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://soap.integration.fsm.comarch.com/", name = "Result")
-    public JAXBElement<UpdateWorkOrderResponse> createResult(UpdateWorkOrderResponse value) {
-        return new JAXBElement<UpdateWorkOrderResponse>(_Result_QNAME, UpdateWorkOrderResponse.class, null, value);
+    public JAXBElement<Result> createResult(Result value) {
+        return new JAXBElement<Result>(_Result_QNAME, Result.class, null, value);
     }
 
     /**
@@ -272,6 +281,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.integration.fsm.comarch.com/", name = "SPCommand")
     public JAXBElement<SpCommand> createSPCommand(SpCommand value) {
         return new JAXBElement<SpCommand>(_SPCommand_QNAME, SpCommand.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Node }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "node", scope = Inventory.class)
+    public JAXBElement<Node> createInventoryNode(Node value) {
+        return new JAXBElement<Node>(_InventoryNode_QNAME, Node.class, Inventory.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Items }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "items", scope = Inventory.class)
+    public JAXBElement<Items> createInventoryItems(Items value) {
+        return new JAXBElement<Items>(_InventoryItems_QNAME, Items.class, Inventory.class, value);
     }
 
     /**
@@ -374,33 +401,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "customer", scope = TaskList.class)
-    public JAXBElement<Customer> createTaskListCustomer(Customer value) {
-        return new JAXBElement<Customer>(_TaskListCustomer_QNAME, Customer.class, TaskList.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Node }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "node", scope = Inventory.class)
-    public JAXBElement<Node> createInventoryNode(Node value) {
-        return new JAXBElement<Node>(_InventoryNode_QNAME, Node.class, Inventory.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Items }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "items", scope = Inventory.class)
-    public JAXBElement<Items> createInventoryItems(Items value) {
-        return new JAXBElement<Items>(_InventoryItems_QNAME, Items.class, Inventory.class, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
@@ -485,9 +485,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "customer", scope = SpCommand.class)
-    public JAXBElement<Customer> createSpCommandCustomer(Customer value) {
-        return new JAXBElement<Customer>(_TaskListCustomer_QNAME, Customer.class, SpCommand.class, value);
+    @XmlElementDecl(namespace = "", name = "customer", scope = TaskList.class)
+    public JAXBElement<Customer> createTaskListCustomer(Customer value) {
+        return new JAXBElement<Customer>(_SpCommandCustomer_QNAME, Customer.class, TaskList.class, value);
     }
 
 }

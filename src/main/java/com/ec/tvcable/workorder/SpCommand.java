@@ -59,7 +59,7 @@ public class SpCommand {
     protected String workOrderURL;
     @XmlElement(required = true)
     protected ActivityTypeEnum activityType;
-    @XmlElementRef(name = "customer", type = JAXBElement.class)
+    @XmlElementRef(name = "customer", type = JAXBElement.class, required = false)
     protected JAXBElement<Customer> customer;
     @XmlElement(required = true)
     protected Items items;
