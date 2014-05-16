@@ -60,25 +60,25 @@ public class Location {
     protected String locationId;
     @XmlElement(required = true)
     protected AdministrationUnit administrationUnit;
-    @XmlElementRef(name = "cityAdministrationUnit", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "cityAdministrationUnit", type = JAXBElement.class)
     protected JAXBElement<AdministrationUnit> cityAdministrationUnit;
-    @XmlElementRef(name = "cityId", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "cityId", type = JAXBElement.class)
     protected JAXBElement<String> cityId;
     @XmlElement(required = true)
     protected String cityName;
-    @XmlElementRef(name = "streetId", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "streetId", type = JAXBElement.class)
     protected JAXBElement<String> streetId;
-    @XmlElementRef(name = "streetName", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "streetName", type = JAXBElement.class)
     protected JAXBElement<String> streetName;
-    @XmlElementRef(name = "buildingNo", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "buildingNo", type = JAXBElement.class)
     protected JAXBElement<String> buildingNo;
-    @XmlElementRef(name = "flatNo", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "flatNo", type = JAXBElement.class)
     protected JAXBElement<String> flatNo;
-    @XmlElementRef(name = "longitude", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "longitude", type = JAXBElement.class)
     protected JAXBElement<BigDecimal> longitude;
-    @XmlElementRef(name = "latitude", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "latitude", type = JAXBElement.class)
     protected JAXBElement<BigDecimal> latitude;
-    @XmlElementRef(name = "description", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "description", type = JAXBElement.class)
     protected JAXBElement<String> description;
 
     /**

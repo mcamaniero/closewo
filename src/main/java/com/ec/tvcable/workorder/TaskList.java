@@ -65,7 +65,7 @@ public class TaskList {
     @XmlElement(required = true)
     protected Location location;
     protected Inventory inventory;
-    @XmlElementRef(name = "customer", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "customer", type = JAXBElement.class)
     protected JAXBElement<Customer> customer;
     protected Attributes attributes;
 

@@ -6,7 +6,7 @@
 		<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://soap.integration.fsm.comarch.com/">
 			<xs:element name="UpdateWorkOrder" type="tns:workOrderItem" />
 			<xs:element name="CloseWorkOrder" type="tns:workOrderItem" />
-			<xs:element name="SPCommand" type="tns:spCommand" />
+			<xs:element name="SPCommand" type="tns:spCommand" />S
 			<xs:element name="Result" type="tns:updateWorkOrderResponse" />
 
 			<xs:complexType name="workOrderItem">
@@ -225,17 +225,17 @@
 		<wsdl:operation name="updateWorkOrder">
 			<wsdl:input message="tns:UpdateWorkOrder" name="updateWorkOrder" />
 			<wsdl:output message="tns:updateWorkOrderResponse" name="updateWorkOrderResponse" />
-			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+<!-- 			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" /> -->
 		</wsdl:operation>
 		<wsdl:operation name="closeWorkOrder">
 			<wsdl:input message="tns:CloseWorkOrder" name="closeWorkOrder" />
 			<wsdl:output message="tns:updateWorkOrderResponse" name="closeWorkOrderResponse" />
-			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+<!-- 			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" /> -->
 		</wsdl:operation>
 		<wsdl:operation name="sendSPCommand">
 			<wsdl:input message="tns:SPCommand" name="sendSPCommand" />
 			<wsdl:output message="tns:updateWorkOrderResponse" name="SPCommandResponse" />
-			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" />
+<!-- 			<wsdl:fault message="tns:ApplicationException" name="ApplicationException" /> -->
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="FSMIntegrationEndpointServiceSoapBinding" type="tns:FSMIntegrationEndpoint">
@@ -248,9 +248,9 @@
 			<wsdl:output name="updateWorkOrderResponse">
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="ApplicationException">
-				<soap:fault name="ApplicationException" use="literal" />
-			</wsdl:fault>
+<!-- 			<wsdl:fault name="ApplicationException"> -->
+<!-- 				<soap:fault name="ApplicationException" use="literal" /> -->
+<!-- 			</wsdl:fault> -->
 		</wsdl:operation>
 		<wsdl:operation name="closeWorkOrder">
 			<soap:operation soapAction="" style="document" />
@@ -260,9 +260,9 @@
 			<wsdl:output name="closeWorkOrderResponse">
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="ApplicationException">
-				<soap:fault name="ApplicationException" use="literal" />
-			</wsdl:fault>
+<!-- 			<wsdl:fault name="ApplicationException"> -->
+<!-- 				<soap:fault name="ApplicationException" use="literal" /> -->
+<!-- 			</wsdl:fault> -->
 		</wsdl:operation>
 		<wsdl:operation name="sendSPCommand">
 			<soap:operation soapAction="" style="document" />
@@ -272,9 +272,9 @@
 			<wsdl:output name="SPCommandResponse">
 				<soap:body use="literal" />
 			</wsdl:output>
-			<wsdl:fault name="ApplicationException">
-				<soap:fault name="ApplicationException" use="literal" />
-			</wsdl:fault>
+<!-- 			<wsdl:fault name="ApplicationException"> -->
+<!-- 				<soap:fault name="ApplicationException" use="literal" /> -->
+<!-- 			</wsdl:fault> -->
 		</wsdl:operation>
 	</wsdl:binding>
 	<wsdl:service name="FSMIntegrationEndpointService">

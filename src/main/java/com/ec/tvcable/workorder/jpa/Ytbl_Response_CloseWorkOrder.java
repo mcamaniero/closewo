@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,6 +28,14 @@ public class Ytbl_Response_CloseWorkOrder {
 	
 	@Column(name ="DATEERROR")
 	private Date dateError;
+	
+	@Column(name = "xml_request")
+	@Lob
+	private String XMLRequest;
+	
+	@Column(name = "xml_response")
+	@Lob
+	private String XMLResponse;
 	
 	public Integer getId() {
 		return id;
@@ -60,6 +69,20 @@ public class Ytbl_Response_CloseWorkOrder {
 		this.dateError = dateError;
 	}
 	
+	public String getXMLRequest() {
+		return XMLRequest;
+	}
+
+	public void setXMLRequest(String xMLRequest) {
+		XMLRequest = xMLRequest;
+	}
 	
+	public String getXMLResponse() {
+		return XMLResponse;
+	}
+
+	public void setXMLResponse(String xMLResponse) {
+		XMLResponse = xMLResponse;
+	}
 
 }

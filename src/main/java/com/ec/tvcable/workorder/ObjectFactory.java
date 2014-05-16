@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _SpCommandCustomer_QNAME = new QName("", "customer");
     private final static QName _Result_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "Result");
     private final static QName _CloseWorkOrder_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "CloseWorkOrder");
     private final static QName _ApplicationException_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "ApplicationException");
@@ -33,17 +32,6 @@ public class ObjectFactory {
     private final static QName _SPCommand_QNAME = new QName("http://soap.integration.fsm.comarch.com/", "SPCommand");
     private final static QName _AdministrationUnitId_QNAME = new QName("", "id");
     private final static QName _AdministrationUnitAdministrationUnit_QNAME = new QName("", "administrationUnit");
-    private final static QName _LocationBuildingNo_QNAME = new QName("", "buildingNo");
-    private final static QName _LocationStreetId_QNAME = new QName("", "streetId");
-    private final static QName _LocationCityId_QNAME = new QName("", "cityId");
-    private final static QName _LocationDescription_QNAME = new QName("", "description");
-    private final static QName _LocationLongitude_QNAME = new QName("", "longitude");
-    private final static QName _LocationStreetName_QNAME = new QName("", "streetName");
-    private final static QName _LocationLatitude_QNAME = new QName("", "latitude");
-    private final static QName _LocationFlatNo_QNAME = new QName("", "flatNo");
-    private final static QName _LocationCityAdministrationUnit_QNAME = new QName("", "cityAdministrationUnit");
-    private final static QName _InventoryNode_QNAME = new QName("", "node");
-    private final static QName _InventoryItems_QNAME = new QName("", "items");
     private final static QName _CustomerBusinessName_QNAME = new QName("", "businessName");
     private final static QName _CustomerLastName_QNAME = new QName("", "lastName");
     private final static QName _CustomerLocation_QNAME = new QName("", "location");
@@ -53,6 +41,18 @@ public class ObjectFactory {
     private final static QName _CustomerFirstName_QNAME = new QName("", "firstName");
     private final static QName _CustomerContacts_QNAME = new QName("", "contacts");
     private final static QName _CustomerPhoneNumber3_QNAME = new QName("", "phoneNumber3");
+    private final static QName _TaskListCustomer_QNAME = new QName("", "customer");
+    private final static QName _InventoryNode_QNAME = new QName("", "node");
+    private final static QName _InventoryItems_QNAME = new QName("", "items");
+    private final static QName _LocationBuildingNo_QNAME = new QName("", "buildingNo");
+    private final static QName _LocationStreetId_QNAME = new QName("", "streetId");
+    private final static QName _LocationCityId_QNAME = new QName("", "cityId");
+    private final static QName _LocationDescription_QNAME = new QName("", "description");
+    private final static QName _LocationLongitude_QNAME = new QName("", "longitude");
+    private final static QName _LocationStreetName_QNAME = new QName("", "streetName");
+    private final static QName _LocationLatitude_QNAME = new QName("", "latitude");
+    private final static QName _LocationFlatNo_QNAME = new QName("", "flatNo");
+    private final static QName _LocationCityAdministrationUnit_QNAME = new QName("", "cityAdministrationUnit");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.ec.tvcable.workorder
@@ -230,15 +230,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "customer", scope = SpCommand.class)
-    public JAXBElement<Customer> createSpCommandCustomer(Customer value) {
-        return new JAXBElement<Customer>(_SpCommandCustomer_QNAME, Customer.class, SpCommand.class, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdateWorkOrderResponse }{@code >}}
      * 
      */
@@ -299,6 +290,114 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "administrationUnit", scope = AdministrationUnit.class)
     public JAXBElement<AdministrationUnit> createAdministrationUnitAdministrationUnit(AdministrationUnit value) {
         return new JAXBElement<AdministrationUnit>(_AdministrationUnitAdministrationUnit_QNAME, AdministrationUnit.class, AdministrationUnit.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "businessName", scope = Customer.class)
+    public JAXBElement<String> createCustomerBusinessName(String value) {
+        return new JAXBElement<String>(_CustomerBusinessName_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "lastName", scope = Customer.class)
+    public JAXBElement<String> createCustomerLastName(String value) {
+        return new JAXBElement<String>(_CustomerLastName_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Location }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "location", scope = Customer.class)
+    public JAXBElement<Location> createCustomerLocation(Location value) {
+        return new JAXBElement<Location>(_CustomerLocation_QNAME, Location.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "email", scope = Customer.class)
+    public JAXBElement<String> createCustomerEmail(String value) {
+        return new JAXBElement<String>(_CustomerEmail_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "phoneNumber2", scope = Customer.class)
+    public JAXBElement<String> createCustomerPhoneNumber2(String value) {
+        return new JAXBElement<String>(_CustomerPhoneNumber2_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "phoneNumber1", scope = Customer.class)
+    public JAXBElement<String> createCustomerPhoneNumber1(String value) {
+        return new JAXBElement<String>(_CustomerPhoneNumber1_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "firstName", scope = Customer.class)
+    public JAXBElement<String> createCustomerFirstName(String value) {
+        return new JAXBElement<String>(_CustomerFirstName_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Contacts }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "contacts", scope = Customer.class)
+    public JAXBElement<Contacts> createCustomerContacts(Contacts value) {
+        return new JAXBElement<Contacts>(_CustomerContacts_QNAME, Contacts.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "phoneNumber3", scope = Customer.class)
+    public JAXBElement<String> createCustomerPhoneNumber3(String value) {
+        return new JAXBElement<String>(_CustomerPhoneNumber3_QNAME, String.class, Customer.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "customer", scope = TaskList.class)
+    public JAXBElement<Customer> createTaskListCustomer(Customer value) {
+        return new JAXBElement<Customer>(_TaskListCustomer_QNAME, Customer.class, TaskList.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Node }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "node", scope = Inventory.class)
+    public JAXBElement<Node> createInventoryNode(Node value) {
+        return new JAXBElement<Node>(_InventoryNode_QNAME, Node.class, Inventory.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Items }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "items", scope = Inventory.class)
+    public JAXBElement<Items> createInventoryItems(Items value) {
+        return new JAXBElement<Items>(_InventoryItems_QNAME, Items.class, Inventory.class, value);
     }
 
     /**
@@ -386,108 +485,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "customer", scope = TaskList.class)
-    public JAXBElement<Customer> createTaskListCustomer(Customer value) {
-        return new JAXBElement<Customer>(_SpCommandCustomer_QNAME, Customer.class, TaskList.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Node }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "node", scope = Inventory.class)
-    public JAXBElement<Node> createInventoryNode(Node value) {
-        return new JAXBElement<Node>(_InventoryNode_QNAME, Node.class, Inventory.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Items }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "items", scope = Inventory.class)
-    public JAXBElement<Items> createInventoryItems(Items value) {
-        return new JAXBElement<Items>(_InventoryItems_QNAME, Items.class, Inventory.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "businessName", scope = Customer.class)
-    public JAXBElement<String> createCustomerBusinessName(String value) {
-        return new JAXBElement<String>(_CustomerBusinessName_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "lastName", scope = Customer.class)
-    public JAXBElement<String> createCustomerLastName(String value) {
-        return new JAXBElement<String>(_CustomerLastName_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Location }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "location", scope = Customer.class)
-    public JAXBElement<Location> createCustomerLocation(Location value) {
-        return new JAXBElement<Location>(_CustomerLocation_QNAME, Location.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "email", scope = Customer.class)
-    public JAXBElement<String> createCustomerEmail(String value) {
-        return new JAXBElement<String>(_CustomerEmail_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "phoneNumber2", scope = Customer.class)
-    public JAXBElement<String> createCustomerPhoneNumber2(String value) {
-        return new JAXBElement<String>(_CustomerPhoneNumber2_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "phoneNumber1", scope = Customer.class)
-    public JAXBElement<String> createCustomerPhoneNumber1(String value) {
-        return new JAXBElement<String>(_CustomerPhoneNumber1_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "firstName", scope = Customer.class)
-    public JAXBElement<String> createCustomerFirstName(String value) {
-        return new JAXBElement<String>(_CustomerFirstName_QNAME, String.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Contacts }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "contacts", scope = Customer.class)
-    public JAXBElement<Contacts> createCustomerContacts(Contacts value) {
-        return new JAXBElement<Contacts>(_CustomerContacts_QNAME, Contacts.class, Customer.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "phoneNumber3", scope = Customer.class)
-    public JAXBElement<String> createCustomerPhoneNumber3(String value) {
-        return new JAXBElement<String>(_CustomerPhoneNumber3_QNAME, String.class, Customer.class, value);
+    @XmlElementDecl(namespace = "", name = "customer", scope = SpCommand.class)
+    public JAXBElement<Customer> createSpCommandCustomer(Customer value) {
+        return new JAXBElement<Customer>(_TaskListCustomer_QNAME, Customer.class, SpCommand.class, value);
     }
 
 }

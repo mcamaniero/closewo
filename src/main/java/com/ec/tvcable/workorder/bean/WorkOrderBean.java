@@ -1,36 +1,33 @@
 package com.ec.tvcable.workorder.bean;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
-import com.ec.tvcable.workorder.InterfaceWorkOrder;
+import com.ec.tvcable.workorder.AdditionalAttribute;
+import com.ec.tvcable.workorder.CloseWorkOrderItem;
+import com.ec.tvcable.workorder.FSMIntegrationEndpoint;
+import com.ec.tvcable.workorder.InterfaceDevice;
+import com.ec.tvcable.workorder.InterfaceMaterials;
+import com.ec.tvcable.workorder.InterfaceResponseCWO;
+import com.ec.tvcable.workorder.InterfaceWorkCloseOrder;
+import com.ec.tvcable.workorder.Item;
+import com.ec.tvcable.workorder.ItemKey;
+import com.ec.tvcable.workorder.SpCommand;
 import com.ec.tvcable.workorder.UpdateWorkOrderResponse;
 import com.ec.tvcable.workorder.WorkOrderItem;
-import com.ec.tvcable.workorder.TaskList;
-import com.ec.tvcable.workorder.AdditionalAttribute;
-import com.ec.tvcable.workorder.Item;
 import com.ec.tvcable.workorder.jpa.YtblRequesCloseWorkOrder;
-import com.ec.tvcable.workorder.jpa.Ytbl_Request;
-import com.ec.tvcable.workorder.InterfaceWorkCloseOrder;
 import com.ec.tvcable.workorder.jpa.Ytbl_Device;
-import com.ec.tvcable.workorder.InterfaceDevice;
 import com.ec.tvcable.workorder.jpa.Ytbl_Materials;
-import com.ec.tvcable.workorder.InterfaceMaterials;
 import com.ec.tvcable.workorder.jpa.Ytbl_Response_CloseWorkOrder;
-import com.ec.tvcable.workorder.InterfaceResponseCWO;
 
-
-
-@Service(InterfaceWorkOrder.class)
-public class WorkOrderBean implements InterfaceWorkOrder{
+@Service(value=FSMIntegrationEndpoint.class)
+public class WorkOrderBean implements FSMIntegrationEndpoint {
 	
 	@Reference
 	@Inject
@@ -46,321 +43,202 @@ public class WorkOrderBean implements InterfaceWorkOrder{
 	
 	@Reference
 	@Inject
-	private InterfaceResponseCWO transactionResponseCWO;
+	private InterfaceResponseCWO interfaceResponseCWO;
 	
-	private WorkOrderItem requestResult;
-	private YtblRequesCloseWorkOrder wcotmp;
-	private Ytbl_Request requestYtbl;
+	private UpdateWorkOrderResponse updateWorkOrderResponse;
+	private WorkOrderItem workOrderItem;
+	private YtblRequesCloseWorkOrder ytblRequestCloseWorkOrder;	
+	private CloseWorkOrderItem closeWorkorderItem;
 	
-	private List<TaskList> taskList;
-	private List<AdditionalAttribute> addattribute;
-	private List<Item> item;
-	
+	private String sourceSystem = new String();
+	private String processId = new String();
+	private String processSignature = new String();
+	private String workOrderId = new String();
+	//private String workOrderURL = new String();
+	private String status = new String();
+
 	@Override
-	public UpdateWorkOrderResponse CloseWorkOrder(WorkOrderItem parameters) throws Exception {
-		this.requestResult = parameters;
-		UpdateWorkOrderResponse response = new UpdateWorkOrderResponse();
-		
+	public UpdateWorkOrderResponse closeWorkOrder(WorkOrderItem workorderItemParameters) {
+		System.out.println("closeWorkOrder");
+		updateWorkOrderResponse = new UpdateWorkOrderResponse();
+		workOrderItem = workorderItemParameters;
+				
 		try{
-			processTask();
-			processAttribute(taskList);
-			processItem(taskList);
+			closeWorkorderItem = new CloseWorkOrderItem(workOrderItem);
+			closeWorkorderItem.processTask();
 			
+			saveCloseWorkorders();
 			
-			saveCloseWorkOrder(parameters);
-			saveDevices(parameters);
-			saveMaterials(parameters);
-			
-			
+			saveResponseData("0","Request successfully processed");
+			System.out.println("Request successfully processed");
 			
 		}catch(Exception e){
-			saveResponse(e.toString());
-		}finally{
-			saveResponse("OK");
+			saveResponseData("1",e.toString());
+			e.printStackTrace();
+			System.out.println("Error: "+ e.toString());			
 		}
-		
-		return response;
+		saveResponse();
+		return updateWorkOrderResponse;
 	}
 	
-	private void processTask(){		
-		taskList = new ArrayList<TaskList>();
+	private void saveCloseWorkorders()  throws Exception{
+		int i;
 		
-		for(TaskList taskListTMP : requestResult.getTasks().getTask()){
-				taskList.add(taskListTMP);
-		}		
+		try{		
+			sourceSystem = workOrderItem.getSourceSystem();
+			processId = workOrderItem.getProcessId();
+			processSignature = workOrderItem.getProcessSignature();
+			workOrderId = workOrderItem.getWorkOrderId();
+			//workOrderURL = workOrderItem.getWorkOrderURL();
+			status = workOrderItem.getStatus();
+		
+			for (i=0;i<closeWorkorderItem.getTaskSize();i++){			
+				saveCloseWorkOrder(i);
+			}
+		}
+		catch(Exception e){
+			throw new Exception("WorkOrderBean.saveCloseWorkorders(): "+e.getMessage());
+		}
 	}
 	
-	private void processAttribute(List<TaskList> parameter){
-		 addattribute = new ArrayList<AdditionalAttribute>();
-		 
-		 for(TaskList attributesTMP : parameter){
-			 addattribute.addAll(attributesTMP.getAttributes().getAttribute());
-		 } 
-	 }
-	
-	 private void processItem(List<TaskList> parameter){
-		 item = new ArrayList<Item>();
-		 
-		 for (TaskList itemTMP : parameter){
-			 item.addAll(itemTMP.getInventory().getItems().getValue().getItem());
-		 }
-		 
-	 }
-	 
-	 private String getTaskId(List<TaskList> parameter){
-			String idTask = new String();
 			
-			for(TaskList parametro : parameter){
-				idTask = parametro.getTaskId();
-				
-			}
-			return idTask;
+	private void saveCloseWorkOrder(int index) throws Exception{		
+		ytblRequestCloseWorkOrder = new YtblRequesCloseWorkOrder();
+		try{
+			ytblRequestCloseWorkOrder.setSourceSystem(sourceSystem);
+			ytblRequestCloseWorkOrder.setProcessId(Integer.parseInt(processId));
+			ytblRequestCloseWorkOrder.setProcessSignature(processSignature);		
+			ytblRequestCloseWorkOrder.setWorkOrderId(workOrderId);	
+			//workOrderURL
+			ytblRequestCloseWorkOrder.setState(status);
+			ytblRequestCloseWorkOrder.setTipoEnvio("3");		
+			ytblRequestCloseWorkOrder.setTaskId(closeWorkorderItem.getTaskId(index));
+			ytblRequestCloseWorkOrder.setCpartyId(Integer.parseInt(closeWorkorderItem.getCparty(index)));
+			//ytblRequestCloseWorkOrder.setAccountId(Integer.parseInt(closeWorkorderItem.getAccount(index)));
+			ytblRequestCloseWorkOrder.setProcessCreationDate(new Date());
+			ytblRequestCloseWorkOrder.setLongitude(closeWorkorderItem.getLongitude(index));
+			ytblRequestCloseWorkOrder.setLatitude(closeWorkorderItem.getLatitude(index));
+			ytblRequestCloseWorkOrder.setExecutor(closeWorkorderItem.getExecutor(index));
+			ytblRequestCloseWorkOrder.setDateFrom(closeWorkorderItem.getDateFrom(index));
+			ytblRequestCloseWorkOrder.setDateTo(closeWorkorderItem.getDateto(index));
+			ytblRequestCloseWorkOrder.setNodeId(closeWorkorderItem.getNodeId(index));
+			
+			interfaceWorkCloseOrder.saveYtblRequest(ytblRequestCloseWorkOrder);
+			saveDevicesMaterials(index);
 		}
-	 private String getCparty(List<TaskList> parameter){
-			String cparty = new String();
-			
-			for(TaskList parametro : parameter){
-				cparty = parametro.getCustomer().getValue().getCustomerId();
-			}
-			
-			return cparty;
+		catch (Exception e){
+			throw new Exception("WorkOrderBean.saveCloseWorkOrder(int): "+e.getMessage());
 		}
-	 
-	 private String getAccount(List<AdditionalAttribute> parameter){
-		 String account =new  String();
 		
-		for(AdditionalAttribute parametro : parameter){
-			account = parametro.getName();
-		}
-		return account;
+		
 	}
 	 
-	 private Date getProcessDateCreation(List<TaskList> parameter){
-			Date date = new Date();
+	private void saveDevicesMaterials(int index) throws Exception {		
+		try{
+			for(Item itemIterator : closeWorkorderItem.getItems(index) ){
 			
-			for(TaskList parametro : parameter){
-				date = parametro.getRealizationInterval().getDateFrom().toGregorianCalendar().getTime();
+				if (itemIterator.getItemKey().getItemClass().toUpperCase().equals("SERVICE")){
+					saveDevice(itemIterator, Integer.parseInt(closeWorkorderItem.getTaskId()));
+				}
+				else if (itemIterator.getItemKey().getItemClass().toUpperCase().equals("MATERIAL")){
+					saveMaterial(itemIterator, Integer.parseInt(closeWorkorderItem.getTaskId()) );
+				}
 			}
-			return date;
 		}
+		catch (Exception e){
+			throw new Exception("WorkOrderItem.saveDevicesMaterials(int): "+e.getMessage());
+		}
+	}
+
+	private void saveDevice(Item item, Integer taskId) throws Exception{
+		Ytbl_Device ytblDevice = new Ytbl_Device();		
+		
+		try{
+			ytblDevice.setrequestId(ytblRequestCloseWorkOrder.getId());
+			ytblDevice.setprocessId(Integer.parseInt(this.processId));
+			ytblDevice.setworkOrderId(Integer.parseInt(this.workOrderId));
+			ytblDevice.settaskId(taskId.toString());
+			ytblDevice.setState(this.status);
+			ytblDevice.setcreateDate(new Date());
+			ytblDevice.setcitemId(item.getItemKey().getItemId());
+			
+			for (ItemKey relatedItems : item.getRelatedItems().getItemKey() ){
+				if (relatedItems.getItemType().toUpperCase().equals("EQUIPMENT") )
+					ytblDevice.setresourceId(relatedItems.getItemId());
+			
+				if ((item.getItemKey().getItemClass().toUpperCase().equals("SERVICE")) 
+						&& (relatedItems.getItemType().toUpperCase().equals("EQUIPMENT") ))
+					for (AdditionalAttribute attribute : item.getAttributes().getAttribute() ){
+						if (attribute.getName().toUpperCase().equals("ACCESS_POINT_NUMBER")) 
+							ytblDevice.setmacAddress(attribute.getValue().toString());
+					}
+			}		
+			interfaceDevice.saveDevice(ytblDevice);
+		}
+		catch(Exception e){
+			throw new Exception("WorkOrderBean.saveDevice(Item,Integer): "+e.getMessage());
+		}
+	}
 	 
-	 private String getLongitude(List<TaskList> parameter){
-			String longitude = new String();
+	public void saveMaterial(Item item, Integer taskId) throws Exception{
+		Ytbl_Materials ytblMaterials = new Ytbl_Materials();
 			
-			for(TaskList parametro : parameter){
-				longitude = parametro.getCustomer().getValue().getLocation().getValue().getLongitude().toString();
-			}
-			return longitude;
+		try{
+			ytblMaterials.setrequestId(ytblRequestCloseWorkOrder.getId());
+			ytblMaterials.setprocessId(Integer.parseInt(this.processId));
+			ytblMaterials.setworkOrderId(this.workOrderId);			
+			ytblMaterials.settaskId(taskId.toString());
+			ytblMaterials.setcodeMaterial(getMaterialCode(item.getItemKey().getItemType().toString()));
+			ytblMaterials.setnumberMaterial(item.getQuantity().toString());
+			interfaceMaterials.saveMaterials(ytblMaterials);		
 		}
-		
-		private String getLatitude(List<TaskList> parameter){
-			String latitude = new String();
-			
-			for(TaskList parametro : parameter){
-				latitude = parametro.getCustomer().getValue().getLocation().getValue().getLongitude().toString();
-			}
-			return latitude;
+		catch(Exception e){
+			throw new Exception("WorkOrderBean.saveMaterial(Item,Integer): "+e.getMessage());
 		}
-		
-		private String getExecutor(List<TaskList> parameter){
-			String executor = new String();
-			
-			for(TaskList parametro : parameter){
-				executor = parametro.getExecutor().getExecutorId();
-			}
-			return executor;
-		}
-		
-		private Date getDateFrom(List<TaskList> parameter){
-			Date executor = new Date();
-			
-			for(TaskList parametro : parameter){
-				executor = parametro.getRealizationInterval().getDateFrom().toGregorianCalendar().getTime();
-			}
-			return executor;
-		}
-		
-		private Date getDateto(List<TaskList> parameter){
-			Date executor = new Date();
-			
-			for(TaskList parametro : parameter){
-				executor = parametro.getRealizationInterval().getDateTo().toGregorianCalendar().getTime();
-			}
-			return executor;
-		}
-		
-		private String getNodeId(List<TaskList> parameter){
-			String executor = new String();
-			
-			for(TaskList parametro : parameter){
-				executor = parametro.getInventory().getNode().getValue().getNodeId();
-			}
-			return executor;
-		}
-		
-		private String getCitemId(List<Item> parameter){
-			String dato = new String();
-			
-			for(Item parametro : parameter){
-				dato = parametro.getItemKey().getItemId();
-			}
-			
-			return dato;
-		}
-		
-		private String getCitemClass(List<Item> parameter){
-			String dato = new String();
-			
-			for(Item parametro : parameter){
-				dato = parametro.getItemKey().getItemClass();
-				
-			}
-			
-			return dato;
-		}
-		
-		private String getCitemType(List<Item> parameter){
-			String dato = new String();
-			
-			for(Item parametro : parameter){
-				dato = parametro.getItemKey().getItemType();
-			}
-			
-			return dato;
-		}
-		
-		private String getStatus(List<Item> parameter){
-			String dato = new String();
-			
-			for(Item parametro : parameter){
-				dato = parametro.getStatus();
-				
-			}
-			
-			return dato;
-		}
-		
+	}
 	 
-	 private void saveCloseWorkOrder(WorkOrderItem cwo){
-			YtblRequesCloseWorkOrder cwoTable = new YtblRequesCloseWorkOrder();
-			
-			    cwoTable.setProcessId(Integer.parseInt(cwo.getProcessId()));
-				cwoTable.setSourceSystem(cwo.getSourceSystem());
-				cwoTable.setWorkOrderId(cwo.getWorkOrderId());
-				cwoTable.setTaskId(getTaskId(taskList));
-				cwoTable.setCpartyId(Integer.parseInt(getCparty(taskList)));
-				cwoTable.setAccountId(Integer.parseInt(getAccount(addattribute)));
-				cwoTable.setProcessCreationDate(getProcessDateCreation(taskList));
-				cwoTable.setOrderType(requestYtbl.getOrderType());
-				cwoTable.setOrderTechnology(requestYtbl.getOrderTechnology());
-				cwoTable.setLocationId(requestYtbl.getLocationId());
-				cwoTable.setProvinceId(requestYtbl.getProvinceId());
-				cwoTable.setProvinceName(requestYtbl.getProvinceName());
-				cwoTable.setSectorid(requestYtbl.getSectorId());
-				cwoTable.setSectorName(requestYtbl.getSectorName());
-				cwoTable.setZonaId(requestYtbl.getzonaId());
-				cwoTable.setZonaName(requestYtbl.getzonaName());
-				cwoTable.setCityId(requestYtbl.getcityId());
-				cwoTable.setCityName(requestYtbl.getcityName());
-				
-				cwoTable.setStreetId(requestYtbl.getstreetId());
-				cwoTable.setStreetName(requestYtbl.getstreetName());
-				cwoTable.setSubSector(requestYtbl.getsubSectorId());
-				cwoTable.setSubSectorName(requestYtbl.getsubSectorName());
-				cwoTable.setBuildIngno(requestYtbl.getbuildIngno());
-				cwoTable.setFlatNo(requestYtbl.getflatNo());
-				cwoTable.setLongitude(getLongitude(taskList));
-				cwoTable.setLatitude(getLatitude(taskList));
-				cwoTable.setCustomerId(requestYtbl.getcustomerId());
-				cwoTable.setCustomerType(requestYtbl.getcustomerType());
-				cwoTable.setFirstname(requestYtbl.getFirstName());
-				cwoTable.setLastName(requestYtbl.getLastName());
-				cwoTable.setBusinessName(requestYtbl.getbusinessName());
-				cwoTable.setPhoneNumber1(requestYtbl.getphoneNumber1());
-				cwoTable.setPhoneNumber2(requestYtbl.getphoneNumber2());
-				cwoTable.setPhoneNumber3(requestYtbl.getphoneNumber3());
-				cwoTable.setEmail(requestYtbl.getEmail());
-				cwoTable.setcontactsContact(requestYtbl.getcontactsContact());
-				cwoTable.setContactName(requestYtbl.getcontactName());
-				cwoTable.setContactValue(requestYtbl.getcontactValue());
-				cwoTable.setExecutor(getExecutor(taskList));
-				cwoTable.setDateFrom(getDateFrom(taskList));
-				cwoTable.setDateTo(getDateto(taskList));
-				
-				cwoTable.setProcessSignature(cwo.getProcessSignature());
-				cwoTable.setNote(requestYtbl.getNote());
-				cwoTable.setTipoEnvio("3");
-				cwoTable.setState(cwo.getStatus());
-				cwoTable.setNodeId(getNodeId(taskList));
-				//cwoTable.setCreateDate(requestYtbl.getcreateDate());
-				//cwoTable.setUpdateDate(requestYtbl.getupdateDate());
-				cwoTable.setErrorDetail(requestYtbl.geterrorDetail());
-				
-				interfaceWorkCloseOrder.saveYtblRequest(cwoTable);
-		}
+	 public void saveResponse(){
+		System.out.println("saveResponse");
+		Ytbl_Response_CloseWorkOrder ytblResponseCloseWorkOrder = new Ytbl_Response_CloseWorkOrder();
+		Calendar sysdate = new GregorianCalendar();
+		ytblResponseCloseWorkOrder.setdateError(sysdate.getTime());
+		ytblResponseCloseWorkOrder.setCode(updateWorkOrderResponse.getCode());
+		ytblResponseCloseWorkOrder.setDescription(updateWorkOrderResponse.getDescription());
+		ytblResponseCloseWorkOrder.setXMLRequest(JaxbConverter.objectToXMLString((workOrderItem)));
+		ytblResponseCloseWorkOrder.setXMLResponse(JaxbConverter.objectToXMLString((updateWorkOrderResponse)));
+		interfaceResponseCWO.saveResponse(ytblResponseCloseWorkOrder);
+	}
 	 
-	 private void saveDevices(WorkOrderItem cwo){
-			Ytbl_Device device = new Ytbl_Device();
-			
-			device.setrequestId(wcotmp.getId());
-			device.setprocessId(Integer.parseInt(cwo.getProcessId()));
-			device.setworkOrderId(Integer.parseInt(cwo.getWorkOrderId()));
-			
-			device.settaskId(getTaskId(taskList));
-			
-			if(getCitemClass(item).toUpperCase() == "SERVICE")
-			   device.setcitemId(getCitemId(item));
-			else
-				device.setcitemId("");
-			
-			if((getCitemClass(item).toUpperCase() == "SERVICE") && (getCitemType(item).toUpperCase() == "EQUIPMENT"))
-				device.setresourceId(getCitemId(item));	
-			else
-				device.setresourceId("");
-			
-			if((getCitemClass(item).toUpperCase() == "SERVICE") && (getCitemType(item).toUpperCase() == "EQUIPMENT") && (getAccount(addattribute).toUpperCase() == "ACCESS_POINT_NUMBER"))
-				device.setmacAddress2(getCitemId(item));
-			else
-				device.setmacAddress2(getCitemId(item));
-			
-			device.setState(getStatus(item));
-			//device.setcreateDate(requestYtbl.getcreateDate());
-			//device.setupdateDate(requestYtbl.getupdateDate());
-			
-			interfaceDevice.saveDevice(device);
-		}
-	 
-	 public void saveMaterials(WorkOrderItem cwo){
-			Ytbl_Materials material = new Ytbl_Materials();
-			
-			material.setrequestId(wcotmp.getId());
-			material.setprocessId(Integer.parseInt(cwo.getProcessId()));
-			material.setworkOrderId(cwo.getWorkOrderId());
-			
-			material.settaskId(getTaskId(taskList));
-			//material.setcodeMaterial();
-			//material.setnumberMaterial();
-			interfaceMaterials.saveMaterials(material);
-		}
-	 
-	 public void saveResponse(String Error){
-			Ytbl_Response_CloseWorkOrder response = new Ytbl_Response_CloseWorkOrder();
-			Calendar sysdate = new GregorianCalendar();
-			
-				
-			if (Error.equals("OK")) {
-				response.setCode("0");
-			    response.setDescription(Error);
-			}else{
-				response.setCode("1");
-			    response.setDescription(Error);
-			}
-				
-				
-			response.setdateError(sysdate.getTime());
-			
-			transactionResponseCWO.saveResponse(response);
-			
-		}
+	@Override
+	public UpdateWorkOrderResponse sendSPCommand(SpCommand parameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UpdateWorkOrderResponse updateWorkOrder(WorkOrderItem parameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private void saveResponseData(String code, String description)
+	{
+		updateWorkOrderResponse.setCode(code);
+		updateWorkOrderResponse.setDescription(description);
+	}
+	
+	private String getMaterialCode(String material)
+	{
+		int inicio;
+		int fin;
+		
+		inicio =material.indexOf('['); 
+		fin = material.indexOf(']');
+		
+		if (inicio > 1 && fin > 1 )
+			return material.substring(inicio, fin-1);
+		else
+			return "";
+	}
 
 }

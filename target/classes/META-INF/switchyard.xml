@@ -1,58 +1,60 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="workorder" targetNamespace="urn:com.ec.tvcable.wo:wo:1.0">
-  <sca:composite name="workorder" targetNamespace="urn:com.ec.tvcable.wo:wo:1.0">
-    <sca:component name="workOrder">
-      <bean:implementation.bean class="com.ec.tvcable.workorder.bean.WorkOrderBean"/>
-      <sca:service name="InterfaceWorkOrder">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceWorkOrder"/>
-      </sca:service>
-      <sca:reference name="InterfaceWorkCloseOrder">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceWorkCloseOrder"/>
-      </sca:reference>
-      <sca:reference name="InterfaceMaterials">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceMaterials"/>
-      </sca:reference>
-      <sca:reference name="InterfaceDevice">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceDevice"/>
-      </sca:reference>
-      <sca:reference name="InterfaceResponseCWO">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceResponseCWO"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="FSMIntegrationEndpoint" promote="workOrder/InterfaceWorkOrder">
-      <sca:interface.wsdl interface="wsdl/fsm-integration-endpoint.wsdl#wsdl.porttype(FSMIntegrationEndpoint)"/>
-      <soap:binding.soap name="soap1">
-        <soap:wsdl>wsdl/fsm-integration-endpoint.wsdl</soap:wsdl>
-        <soap:wsdlPort>FSMIntegrationEndpointPort</soap:wsdlPort>
-        <soap:contextPath>close-order</soap:contextPath>
-      </soap:binding.soap>
-    </sca:service>
-    <sca:component name="SaveRequest">
-      <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionRequestCWO"/>
-      <sca:service name="InterfaceWorkCloseOrder">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceWorkCloseOrder"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="SaveMaterials">
-      <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionMaterialCWO"/>
-      <sca:service name="InterfaceMaterials">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceMaterials"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="SaveDevices">
-      <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionDeviceCWO"/>
-      <sca:service name="InterfaceDevice">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceDevice"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="SaveResponse">
-      <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionResponseCWO"/>
-      <sca:service name="InterfaceResponseCWO">
-        <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceResponseCWO"/>
-      </sca:service>
-    </sca:component>
-  </sca:composite>
-  <sy:transforms>
-    <transform:transform.jaxb from="{http://soap.integration.fsm.comarch.com/}CloseWorkOrder" to="java:com.ec.tvcable.workorder.WorkOrderItem" contextPath="com.ec.tvcable.workorder"/>
-  </sy:transforms>
+<?xml version="1.0" encoding="UTF-8"?><sy:switchyard xmlns:sy="urn:switchyard-config:switchyard:1.1" xmlns:bean="urn:switchyard-component-bean:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:transform="urn:switchyard-config:transform:1.1" name="workorder" targetNamespace="urn:com.ec.tvcable.wo:wo:1.0">
+    <sca:composite name="workorder" targetNamespace="urn:com.ec.tvcable.wo:wo:1.0">
+        <sca:service name="FSMIntegrationEndpoint" promote="workOrder/FSMIntegrationEndpoint">
+            <sca:interface.wsdl interface="wsdl/fsm-integration-endpoint.wsdl#wsdl.porttype(FSMIntegrationEndpoint)"/>
+            <soap:binding.soap name="CloseWorkorder">
+                <soap:wsdl>wsdl/fsm-integration-endpoint.wsdl</soap:wsdl>
+                <soap:wsdlPort>FSMIntegrationEndpointPort</soap:wsdlPort>
+                <soap:contextPath>CloseWorkorder</soap:contextPath>
+            </soap:binding.soap>
+        </sca:service>
+        <sca:component name="workOrder">
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.WorkOrderBean" requires="managedTransaction.Global"/>
+            <sca:service name="FSMIntegrationEndpoint">
+                <sca:interface.java interface="com.ec.tvcable.workorder.FSMIntegrationEndpoint"/>
+            </sca:service>
+            <sca:reference name="InterfaceWorkCloseOrder">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceWorkCloseOrder"/>
+            </sca:reference>
+            <sca:reference name="InterfaceMaterials">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceMaterials"/>
+            </sca:reference>
+            <sca:reference name="InterfaceDevice">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceDevice"/>
+            </sca:reference>
+            <sca:reference name="InterfaceResponseCWO">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceResponseCWO"/>
+            </sca:reference>
+        </sca:component>
+        <sca:component name="SaveRequest">
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionRequestCWO" requires="managedTransaction.Global"/>
+            <sca:service name="InterfaceWorkCloseOrder">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceWorkCloseOrder"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="SaveMaterials">
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionMaterialCWO" requires="managedTransaction.Global"/>
+            <sca:service name="InterfaceMaterials">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceMaterials"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="SaveDevices">
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionDeviceCWO" requires="managedTransaction.Global"/>
+            <sca:service name="InterfaceDevice">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceDevice"/>
+            </sca:service>
+        </sca:component>
+        <sca:component name="SaveResponse">
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionResponseCWO" requires="managedTransaction.Global"/>
+            <sca:service name="InterfaceResponseCWO">
+                <sca:interface.java interface="com.ec.tvcable.workorder.InterfaceResponseCWO"/>
+            </sca:service>
+        </sca:component>
+    </sca:composite>
+    <sy:transforms>
+        <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="java:com.ec.tvcable.workorder.UpdateWorkOrderResponse" to="{http://soap.integration.fsm.comarch.com/}Result"/>
+        <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}CloseWorkOrder" to="java:com.ec.tvcable.workorder.WorkOrderItem"/>
+        <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}SPCommand" to="java:com.ec.tvcable.workorder.SpCommand"/>
+        <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}UpdateWorkOrder" to="java:com.ec.tvcable.workorder.WorkOrderItem"/>
+    </sy:transforms>
 </sy:switchyard>

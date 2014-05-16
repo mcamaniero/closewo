@@ -15,11 +15,6 @@
       <artifactId>switchyard-component-bean</artifactId>
       <version>${switchyard.version}</version>
     </dependency>
-	<dependency>
-      <groupId>org.switchyard.components</groupId>
-      <artifactId>switchyard-component-camel-jpa</artifactId>
-      <version>${switchyard.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.switchyard.components</groupId>
       <artifactId>switchyard-component-test-mixin-http</artifactId>
@@ -64,14 +59,14 @@
       <version>${switchyard.version}</version>
     </dependency>
     <dependency>
-    	<groupId>org.hibernate.javax.persistence</groupId>
-    	<artifactId>hibernate-jpa-2.1-api</artifactId>
-    	<version>1.0.0.Draft-16</version>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <version>1.0.0.Draft-16</version>
     </dependency>
     <dependency>
-    	<groupId>org.mockito</groupId>
-    	<artifactId>mockito-all</artifactId>
-    	<version>1.9.5</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.9.5</version>
     </dependency>
   </dependencies>
   <build>
