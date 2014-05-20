@@ -9,10 +9,8 @@ import javax.inject.Inject;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
-import com.ec.tvcable.workorder.AdditionalAttribute;
 import com.ec.tvcable.workorder.FSMIntegrationEndpoint;
 import com.ec.tvcable.workorder.Item;
-import com.ec.tvcable.workorder.ItemKey;
 import com.ec.tvcable.workorder.Result;
 import com.ec.tvcable.workorder.WorkOrderItem;
 import com.ec.tvcable.workorder.bean.JaxbConverter;
@@ -140,18 +138,19 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	}
 
 	private void saveDevicesMaterials(int index) throws Exception {
-		int taskId;
+		String taskId;
 
 		try {
 			for (Item itemIterator : closeWorkorderItem.getItems(index)) {
 				try {
-					taskId = Integer.parseInt(closeWorkorderItem.getTaskId());
+					taskId = closeWorkorderItem.getTaskId();
 				} catch (Exception e) {
 					throw new Exception(
-							"WorkOrderBean.saveDevicesMaterials(int): No puede obtener TaskId");
+							"WorkOrderBean.saveDevicesMaterials(int): No puede obtener TaskId: "+ e.toString());
 				}
+				
 				if (itemIterator.getItemKey().getItemClass().toUpperCase()
-						.equals("SERVICE")) {
+						.equals("EQUIPMENT")) {
 					saveDevice(itemIterator, taskId);
 				} else if (itemIterator.getItemKey().getItemClass()
 						.toUpperCase().equals("MATERIAL")) {
@@ -164,43 +163,28 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 		}
 	}
 
-	private void saveDevice(Item item, Integer taskId) throws Exception {
+	private void saveDevice(Item item, String taskId) throws Exception {
 		Ytbl_Device ytblDevice = new Ytbl_Device();
 
 		try {
 			ytblDevice.setrequestId(ytblRequestCloseWorkOrder.getId());
 			ytblDevice.setprocessId(Integer.parseInt(this.processId));
-			ytblDevice.setworkOrderId(Integer.parseInt(this.workOrderId));
+			//ytblDevice.setworkOrderIds(this.workOrderId);
 			ytblDevice.settaskId(taskId.toString());
 			ytblDevice.setState(this.status);
 			ytblDevice.setcreateDate(new Date());
 			ytblDevice.setcitemId(item.getItemKey().getItemId());
-
-			for (ItemKey relatedItems : item.getRelatedItems().getItemKey()) {
-				if (relatedItems.getItemType().toUpperCase()
-						.equals("EQUIPMENT"))
-					ytblDevice.setresourceId(relatedItems.getItemId());
-
-				if ((item.getItemKey().getItemClass().toUpperCase()
-						.equals("SERVICE"))
-						&& (relatedItems.getItemType().toUpperCase()
-								.equals("EQUIPMENT")))
-					for (AdditionalAttribute attribute : item.getAttributes()
-							.getAttribute()) {
-						if (attribute.getName().toUpperCase()
-								.equals("ACCESS_POINT_NUMBER"))
-							ytblDevice.setmacAddress(attribute.getValue()
-									.toString());
-					}
-			}
+			
+			ytblDevice.setresourceId(item.getItemKey().getItemId());
+						
 			interfaceDevice.saveDevice(ytblDevice);
 		} catch (Exception e) {
-			throw new Exception("WorkOrderBean.saveDevice(Item,Integer): "
+			throw new Exception("WorkOrderBean.saveDevice(Item,String): "
 					+ e.toString());
 		}
 	}
 
-	public void saveMaterial(Item item, Integer taskId) throws Exception {
+	public void saveMaterial(Item item, String taskId) throws Exception {
 		Ytbl_Materials ytblMaterials = new Ytbl_Materials();
 
 		try {
@@ -213,7 +197,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblMaterials.setnumberMaterial(item.getQuantity().toString());
 			interfaceMaterials.saveMaterials(ytblMaterials);
 		} catch (Exception e) {
-			throw new Exception("WorkOrderBean.saveMaterial(Item,Integer): "
+			throw new Exception("WorkOrderBean.saveMaterial(Item,String): "
 					+ e.toString());
 		}
 	}
@@ -252,7 +236,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 		fin = material.indexOf(']');
 
 		if (inicio > 1 && fin > 1)
-			return material.substring(inicio, fin - 1);
+			return material.substring(inicio+1, fin);
 		else
 			return "";
 	}

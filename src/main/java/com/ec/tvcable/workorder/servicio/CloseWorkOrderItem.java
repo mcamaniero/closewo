@@ -53,24 +53,41 @@ public class CloseWorkOrderItem {
 		return idTask;
 	}
 	
-	public String getTaskId(int index){
-		String idTask = new String();		
-		idTask = taskLists.get(index).getTaskId() ;
+	public String getTaskId(int index) throws Exception{
+		String idTask = new String();
+		try{
+			idTask = taskLists.get(index).getTaskId() ;
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getTaskId(int): "+e.toString());
+		}
 		return idTask;
 	}
 	
-	public String getCparty(){
+	public String getCparty() {
 		String cparty = new String();
-			
+		
 		for(TaskList parametro : taskLists){
 			cparty = parametro.getCustomer().getValue().getCustomerId();
 		}
 		return cparty;
 	}
 	
-	public String getCparty(int index){
+	public String getCparty(int index) throws Exception{
 		String cparty = new String();
-		cparty = taskLists.get(index).getCustomer().getValue().getCustomerId();
+		try{
+			cparty = taskLists.get(index).getCustomer().getValue().getCustomerId();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getCparty(int): "+e.toString());
+		}
+
 		return cparty;
 	}
 	
@@ -83,9 +100,18 @@ public class CloseWorkOrderItem {
 		return account;
 	}
 	
-	public String getAccount(int index){
+	public String getAccount(int index) throws Exception{
 		String account =new  String();
-		account = additionalAttributes.get(index).getName();
+		try{
+			account = additionalAttributes.get(index).getName();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getAccount(int): "+e.toString());
+		}
+
 		return account;
 	}
 	
@@ -112,9 +138,18 @@ public class CloseWorkOrderItem {
 		return longitude;
 	}
 	
-	public String getLongitude(int index){
+	public String getLongitude(int index) throws Exception{
 		String longitude = new String();
-		longitude = taskLists.get(index).getCustomer().getValue().getLocation().getValue().getLongitude().toString();
+		try{
+			longitude = taskLists.get(index).getCustomer().getValue().getLocation().getValue().getLongitude().toString();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getLongitude(int): "+e.toString());
+		}
+
 		return longitude;
 	}
 	
@@ -127,9 +162,18 @@ public class CloseWorkOrderItem {
 		return latitude;
 	}
 	
-	public String getLatitude(int index){
+	public String getLatitude(int index) throws Exception{
 		String latitude = new String();
-		latitude = taskLists.get(index).getCustomer().getValue().getLocation().getValue().getLongitude().toString();
+		try{
+			latitude = taskLists.get(index).getCustomer().getValue().getLocation().getValue().getLongitude().toString();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getLatitude(int): "+e.toString());
+		}
+
 		return latitude;
 	}
 
@@ -142,9 +186,18 @@ public class CloseWorkOrderItem {
 		return executor;
 	}
 	
-	public String getExecutor(int index){
+	public String getExecutor(int index) throws Exception{
 		String executor = new String();
-		executor = taskLists.get(index).getExecutor().getExecutorId();
+		try{
+			executor = taskLists.get(index).getExecutor().getExecutorId();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getExecutor(int): "+e.toString());
+		}
+
 		return executor;
 	}
 	
@@ -157,9 +210,18 @@ public class CloseWorkOrderItem {
 		return executor;
 	}
 	
-	public Date getDateFrom(int index){
+	public Date getDateFrom(int index) throws Exception{
 		Date executor = new Date();
-		executor = taskLists.get(index).getRealizationInterval().getDateFrom().toGregorianCalendar().getTime();
+		try{
+			executor = taskLists.get(index).getRealizationInterval().getDateFrom().toGregorianCalendar().getTime();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getDateFrom(int): "+e.toString());
+		}
+
 		return executor;
 	}
 	
@@ -172,9 +234,18 @@ public class CloseWorkOrderItem {
 		return executor;
 	}
 	
-	public Date getDateto(int index){
+	public Date getDateto(int index) throws Exception{
 		Date executor = new Date();
-		executor = taskLists.get(index).getRealizationInterval().getDateTo().toGregorianCalendar().getTime();
+		try{
+			executor = taskLists.get(index).getRealizationInterval().getDateTo().toGregorianCalendar().getTime();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getDateto(int): "+e.toString());
+		}
+
 		return executor;
 	}
 		
@@ -187,9 +258,18 @@ public class CloseWorkOrderItem {
 		return executor;
 	}
 	
-	public String getNodeId(int index){
+	public String getNodeId(int index) throws Exception{
 		String executor = new String();
-		executor = taskLists.get(index).getInventory().getNode().getValue().getNodeId();
+		try{
+			executor = taskLists.get(index).getInventory().getNode().getValue().getNodeId();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getNodeId(int): "+e.toString());
+		}
+
 		return executor;
 	}
 	
@@ -203,9 +283,18 @@ public class CloseWorkOrderItem {
 		return dato;
 	}
 
-	public String getCitemId(int index){
+	public String getCitemId(int index) throws Exception{
 		String dato = new String();
-		dato = items.get(index).getItemKey().getItemId();		
+		try{
+			dato = items.get(index).getItemKey().getItemId();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getCitemId(int): "+e.toString());
+		}
+
 		return dato;
 	}
 
@@ -218,9 +307,18 @@ public class CloseWorkOrderItem {
 		return dato;
 	}
 	
-	public String getCitemClass(int index){
+	public String getCitemClass(int index) throws Exception{
 		String dato = new String();
-		dato = items.get(index).getItemKey().getItemClass();
+		try{
+			dato = items.get(index).getItemKey().getItemClass();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getCitemClass(int): "+e.toString());
+		}
+
 		return dato;
 	}
 	
@@ -233,9 +331,18 @@ public class CloseWorkOrderItem {
 		return dato;
 	}		
 	
-	public String getCitemType(int index){
+	public String getCitemType(int index) throws Exception{
 		String dato = new String();
-		dato = items.get(index).getItemKey().getItemType();
+		try{
+			dato = items.get(index).getItemKey().getItemType();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getCitemType(int): "+e.toString());
+		}
+
 		return dato;
 	}
 		
@@ -247,9 +354,18 @@ public class CloseWorkOrderItem {
 		return dato;
 	}
 	
-	public String getStatus(int index){
+	public String getStatus(int index) throws Exception{
 		String dato = new String();
-		dato = items.get(index).getStatus();
+		try{
+			dato = items.get(index).getStatus();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getStatus(int): "+e.toString());
+		}
+
 		return dato;
 	}
 	
