@@ -151,7 +151,7 @@ public class WorkOrderBean implements FSMIntegrationEndpoint {
 							"WorkOrderBean.saveDevicesMaterials(int): No puede obtener TaskId");
 				}
 				if (itemIterator.getItemKey().getItemClass().toUpperCase()
-						.equals("SERVICE")) {
+						.equals("EQUIPMENT")) {
 					saveDevice(itemIterator, taskId);
 				} else if (itemIterator.getItemKey().getItemClass()
 						.toUpperCase().equals("MATERIAL")) {
@@ -174,24 +174,13 @@ public class WorkOrderBean implements FSMIntegrationEndpoint {
 			ytblDevice.settaskId(taskId.toString());
 			ytblDevice.setState(this.status);
 			ytblDevice.setcreateDate(new Date());
-			ytblDevice.setcitemId(item.getItemKey().getItemId());
+			ytblDevice.setresourceId(item.getItemKey().getItemId());
+			
 
 			for (ItemKey relatedItems : item.getRelatedItems().getItemKey()) {
 				if (relatedItems.getItemType().toUpperCase()
-						.equals("EQUIPMENT"))
-					ytblDevice.setresourceId(relatedItems.getItemId());
-
-				if ((item.getItemKey().getItemClass().toUpperCase()
 						.equals("SERVICE"))
-						&& (relatedItems.getItemType().toUpperCase()
-								.equals("EQUIPMENT")))
-					for (AdditionalAttribute attribute : item.getAttributes()
-							.getAttribute()) {
-						if (attribute.getName().toUpperCase()
-								.equals("ACCESS_POINT_NUMBER"))
-							ytblDevice.setmacAddress(attribute.getValue()
-									.toString());
-					}
+					ytblDevice.setcitemId(item.getItemKey().getItemId());
 			}
 			interfaceDevice.saveDevice(ytblDevice);
 		} catch (Exception e) {

@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
     "code",
     "description"
 })
-@XmlRootElement
+@XmlRootElement(name="Result")
 public class Result {
 
     @XmlElement(name = "Code", required = true)
