@@ -54,7 +54,6 @@
     <sy:transforms>
         <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="java:com.ec.tvcable.workorder.Result" to="{http://soap.integration.fsm.comarch.com/}Result"/>
         <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}CloseWorkOrder" to="java:com.ec.tvcable.workorder.WorkOrderItem"/>
-        <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}SPCommand" to="java:com.ec.tvcable.workorder.SpCommand"/>
         <transform:transform.jaxb contextPath="com.ec.tvcable.workorder" from="{http://soap.integration.fsm.comarch.com/}UpdateWorkOrder" to="java:com.ec.tvcable.workorder.WorkOrderItem"/>
     </sy:transforms>
 </sy:switchyard>

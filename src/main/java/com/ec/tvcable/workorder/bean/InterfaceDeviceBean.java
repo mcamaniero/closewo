@@ -9,7 +9,7 @@ import com.ec.tvcable.workorder.jpa.Ytbl_Device;
 import com.ec.tvcable.workorder.servicio.InterfaceDevice;
 
 @Service(InterfaceDevice.class)
-public class TransactionDeviceCWO implements InterfaceDevice {
+public class InterfaceDeviceBean implements InterfaceDevice {
 
 	@PersistenceContext
 	private EntityManager em;

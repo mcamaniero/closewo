@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
  */
 public class JaxbConverter {
 	
-	private static Logger logger = Logger.getLogger(WorkOrderBean.class);
+	private static Logger logger = Logger.getLogger(FSMIntegrationEndpointBean.class);
 
 	public static <T> String objectToXMLString(T object) {
 		try {

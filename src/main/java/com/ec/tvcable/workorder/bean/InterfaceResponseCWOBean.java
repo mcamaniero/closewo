@@ -9,7 +9,7 @@ import com.ec.tvcable.workorder.jpa.Ytbl_Response_CloseWorkOrder;
 import com.ec.tvcable.workorder.servicio.InterfaceResponseCWO;
 
 @Service(InterfaceResponseCWO.class)
-public class TransactionResponseCWO implements InterfaceResponseCWO {
+public class InterfaceResponseCWOBean implements InterfaceResponseCWO {
 
 	
 	@PersistenceContext

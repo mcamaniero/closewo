@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
     "status",
     "tasks"
 })
-@XmlRootElement
+@XmlRootElement(name="CloseWorkOrder")
 public class WorkOrderItem {
 
     @XmlElement(required = true)

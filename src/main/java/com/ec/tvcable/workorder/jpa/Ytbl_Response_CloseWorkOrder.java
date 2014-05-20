@@ -37,6 +37,15 @@ public class Ytbl_Response_CloseWorkOrder {
 	@Lob
 	private String XMLResponse;
 	
+	@Column(name = "taskid")
+	private String taskId;
+	
+	@Column(name = "orderid")
+	private String orderId;
+	
+	@Column(name = "processid")
+	private Integer processId;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -74,7 +83,7 @@ public class Ytbl_Response_CloseWorkOrder {
 	}
 
 	public void setXMLRequest(String xMLRequest) {
-		XMLRequest = xMLRequest;
+		this.XMLRequest = xMLRequest;
 	}
 	
 	public String getXMLResponse() {
@@ -82,7 +91,31 @@ public class Ytbl_Response_CloseWorkOrder {
 	}
 
 	public void setXMLResponse(String xMLResponse) {
-		XMLResponse = xMLResponse;
+		this.XMLResponse = xMLResponse;
+	}
+	
+	public Integer getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(Integer processId) {
+		this.processId = processId;
+	}
+	
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+	
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 }

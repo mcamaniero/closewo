@@ -6,8 +6,8 @@
   </link>
   <children xsi:type="pi:ContainerShape" visible="true" active="true">
     <properties key="sca-type" value="composite"/>
-    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="589" height="694" x="-1" y="-1">
-      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.6" width="529" height="634" x="30" y="30" style="//@styles.0" cornerHeight="12" cornerWidth="12">
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="589" height="564" x="-1" y="-1">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.6" width="529" height="504" x="30" y="30" style="//@styles.0" cornerHeight="12" cornerWidth="12">
         <properties key="sca-type" value="composite"/>
         <graphicsAlgorithmChildren xsi:type="al:Text" foreground="//@colors.3" lineWidth="1" filled="false" transparency="0.0" width="470" height="16" x="15" y="15" font="//@fonts.1" value="workorder"/>
       </graphicsAlgorithmChildren>

@@ -9,7 +9,7 @@ import com.ec.tvcable.workorder.jpa.Ytbl_Materials;
 import com.ec.tvcable.workorder.servicio.InterfaceMaterials;
 
 @Service(InterfaceMaterials.class)
-public class TransactionMaterialCWO implements InterfaceMaterials {
+public class InterfaceMaterialsBean implements InterfaceMaterials {
 
 	@PersistenceContext
 	private EntityManager em;

@@ -11,6 +11,7 @@ import org.switchyard.component.bean.Service;
 
 import com.ec.tvcable.workorder.FSMIntegrationEndpoint;
 import com.ec.tvcable.workorder.Item;
+import com.ec.tvcable.workorder.ItemKey;
 import com.ec.tvcable.workorder.Result;
 import com.ec.tvcable.workorder.WorkOrderItem;
 import com.ec.tvcable.workorder.bean.JaxbConverter;
@@ -87,7 +88,6 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			processId = workOrderItem.getProcessId();
 			processSignature = workOrderItem.getProcessSignature();
 			workOrderId = workOrderItem.getWorkOrderId();
-			// workOrderURL = workOrderItem.getWorkOrderURL();
 			status = workOrderItem.getStatus();
 
 			for (i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
@@ -169,13 +169,15 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 		try {
 			ytblDevice.setrequestId(ytblRequestCloseWorkOrder.getId());
 			ytblDevice.setprocessId(Integer.parseInt(this.processId));
-			//ytblDevice.setworkOrderIds(this.workOrderId);
 			ytblDevice.settaskId(taskId.toString());
 			ytblDevice.setState(this.status);
 			ytblDevice.setcreateDate(new Date());
-			ytblDevice.setcitemId(item.getItemKey().getItemId());
-			
 			ytblDevice.setresourceId(item.getItemKey().getItemId());
+			
+			for (ItemKey itemKey : item.getRelatedItems().getItemKey()) {
+				if (itemKey.getItemClass().toUpperCase().equals("SERVICE"))
+					ytblDevice.setcitemId(itemKey.getItemId());
+			}
 						
 			interfaceDevice.saveDevice(ytblDevice);
 		} catch (Exception e) {
@@ -214,6 +216,8 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 				.objectToXMLString((workOrderItem)));
 		ytblResponseCloseWorkOrder.setXMLResponse(JaxbConverter
 				.objectToXMLString((updateWorkOrderResponse)));
+		ytblResponseCloseWorkOrder.setOrderId(this.workOrderId);
+		ytblResponseCloseWorkOrder.setProcessId(Integer.parseInt(this.processId));
 		interfaceResponseCWO.saveResponse(ytblResponseCloseWorkOrder);
 	}
 

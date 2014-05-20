@@ -9,7 +9,7 @@ import com.ec.tvcable.workorder.jpa.YtblRequesCloseWorkOrder;
 import com.ec.tvcable.workorder.servicio.InterfaceWorkCloseOrder;
 
 @Service(InterfaceWorkCloseOrder.class)
-public class TransactionRequestCWO implements InterfaceWorkCloseOrder {
+public class InterfaceWorkCloseOrderBean implements InterfaceWorkCloseOrder {
 
 	@PersistenceContext
 	private EntityManager em;

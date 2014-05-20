@@ -9,12 +9,10 @@ import javax.inject.Inject;
 import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
-import com.ec.tvcable.workorder.AdditionalAttribute;
 import com.ec.tvcable.workorder.FSMIntegrationEndpoint;
 import com.ec.tvcable.workorder.Item;
 import com.ec.tvcable.workorder.ItemKey;
 import com.ec.tvcable.workorder.Result;
-import com.ec.tvcable.workorder.SpCommand;
 import com.ec.tvcable.workorder.WorkOrderItem;
 import com.ec.tvcable.workorder.jpa.YtblRequesCloseWorkOrder;
 import com.ec.tvcable.workorder.jpa.Ytbl_Device;
@@ -27,7 +25,7 @@ import com.ec.tvcable.workorder.servicio.InterfaceResponseCWO;
 import com.ec.tvcable.workorder.servicio.InterfaceWorkCloseOrder;
 
 @Service(value = FSMIntegrationEndpoint.class)
-public class WorkOrderBean implements FSMIntegrationEndpoint {
+public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 
 	@Reference
 	@Inject
