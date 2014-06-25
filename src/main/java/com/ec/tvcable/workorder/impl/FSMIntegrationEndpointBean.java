@@ -170,7 +170,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblDevice.setrequestId(ytblRequestCloseWorkOrder.getId());
 			ytblDevice.setprocessId(Integer.parseInt(this.processId));
 			ytblDevice.settaskId(taskId.toString());
-			ytblDevice.setState(this.status);
+			ytblDevice.setState(item.getStatus());
 			ytblDevice.setcreateDate(new Date());
 			ytblDevice.setresourceId(item.getItemKey().getItemId());
 			
