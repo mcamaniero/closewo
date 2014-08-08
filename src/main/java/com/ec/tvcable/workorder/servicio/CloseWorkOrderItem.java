@@ -195,7 +195,7 @@ public class CloseWorkOrderItem {
 			return null;
 		}
 		catch (Exception e){
-			throw new Exception("CloseWorkOrderItem.getExecutor(int): "+e.toString());
+			throw new Exception("CloseWorkOrderItem.getExecutor(String): "+e.toString());
 		}
 
 		return executor;

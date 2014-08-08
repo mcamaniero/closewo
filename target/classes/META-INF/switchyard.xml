@@ -9,25 +9,25 @@
             </soap:binding.soap>
         </sca:service>
         <sca:component name="SaveRequest">
-            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionRequestCWO" requires="managedTransaction.Global"/>
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.InterfaceWorkCloseOrderBean" requires="managedTransaction.Global"/>
             <sca:service name="InterfaceWorkCloseOrder">
                 <sca:interface.java interface="com.ec.tvcable.workorder.servicio.InterfaceWorkCloseOrder"/>
             </sca:service>
         </sca:component>
         <sca:component name="SaveMaterials">
-            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionMaterialCWO" requires="managedTransaction.Global"/>
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.InterfaceMaterialsBean" requires="managedTransaction.Global"/>
             <sca:service name="InterfaceMaterials">
                 <sca:interface.java interface="com.ec.tvcable.workorder.servicio.InterfaceMaterials"/>
             </sca:service>
         </sca:component>
         <sca:component name="SaveDevices">
-            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionDeviceCWO" requires="managedTransaction.Global"/>
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.InterfaceMaterialsBean" requires="managedTransaction.Global"/>
             <sca:service name="InterfaceDevice">
                 <sca:interface.java interface="com.ec.tvcable.workorder.servicio.InterfaceDevice"/>
             </sca:service>
         </sca:component>
         <sca:component name="SaveResponse">
-            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.TransactionResponseCWO" requires="managedTransaction.Global"/>
+            <bean:implementation.bean class="com.ec.tvcable.workorder.bean.InterfaceResponseCWOBean" requires="managedTransaction.Global"/>
             <sca:service name="InterfaceResponseCWO">
                 <sca:interface.java interface="com.ec.tvcable.workorder.servicio.InterfaceResponseCWO"/>
             </sca:service>

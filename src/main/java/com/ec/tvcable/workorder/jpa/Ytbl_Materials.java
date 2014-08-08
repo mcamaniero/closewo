@@ -32,6 +32,9 @@ public class Ytbl_Materials {
 	@Column(name = "CODE_MATERIAL")
 	private String codeMaterial;
 	
+	@Column(name = "DESCRIPTION")
+	private String description;
+	
 	@Column(name = "NUMBER_MATERIAL")
 	private String numberMaterial;
 	
@@ -89,6 +92,14 @@ public class Ytbl_Materials {
 
 	public void setnumberMaterial(String numberMaterial) {
 		this.numberMaterial = numberMaterial;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

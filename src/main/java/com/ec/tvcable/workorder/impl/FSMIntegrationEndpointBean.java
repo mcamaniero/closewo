@@ -174,9 +174,13 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblDevice.setcreateDate(new Date());
 			ytblDevice.setresourceId(item.getItemKey().getItemId());
 			
-			for (ItemKey itemKey : item.getRelatedItems().getItemKey()) {
+			try{
+				for (ItemKey itemKey : item.getRelatedItems().getItemKey()) {
 				if (itemKey.getItemClass().toUpperCase().equals("SERVICE"))
 					ytblDevice.setcitemId(itemKey.getItemId());
+				}
+			} catch (Exception e) {
+				System.out.println("No existe getRelatedItems");
 			}
 						
 			interfaceDevice.saveDevice(ytblDevice);
@@ -197,6 +201,8 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblMaterials.setcodeMaterial(getMaterialCode(item.getItemKey()
 					.getItemType().toString()));
 			ytblMaterials.setnumberMaterial(item.getQuantity().toString());
+			ytblMaterials.setDescription(item.getItemKey()
+					.getItemType().toString());
 			interfaceMaterials.saveMaterials(ytblMaterials);
 		} catch (Exception e) {
 			throw new Exception("WorkOrderBean.saveMaterial(Item,String): "
