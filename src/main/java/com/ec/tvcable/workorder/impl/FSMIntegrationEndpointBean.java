@@ -89,6 +89,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			processSignature = workOrderItem.getProcessSignature();
 			workOrderId = workOrderItem.getWorkOrderId();
 			status = workOrderItem.getStatus();
+			
 
 			for (i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
 				saveCloseWorkOrder(i);
@@ -127,6 +128,11 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 					.getDateto(index));
 			ytblRequestCloseWorkOrder.setNodeId(closeWorkorderItem
 					.getNodeId(index));
+			ytblRequestCloseWorkOrder.setCreateDate(closeWorkorderItem.getFinishDate(index));
+			ytblRequestCloseWorkOrder.setUpdateDate(closeWorkorderItem.getRealFinishDate(index));
+			
+			ytblRequestCloseWorkOrder.setMotivoOrden(closeWorkorderItem
+				     .getMotivoOrden(index));
 
 			interfaceWorkCloseOrder.saveYtblRequest(ytblRequestCloseWorkOrder);
 			saveDevicesMaterials(index);

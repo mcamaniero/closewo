@@ -122,7 +122,7 @@ public class Ytbl_Request{
 	private String executor;
 	
 	@Column(name = "sla")
-	private Date sla;
+	private String sla;
 	
 	@Column(name = "datefrom")
 	private Date dateFrom;
@@ -472,11 +472,11 @@ public class Ytbl_Request{
 		this.executor = executor;
 	}
 	
-	public Date getSla(){
+	public String getSla(){
 		return sla;
 	}
 	
-	public void setSla(Date sla){
+	public void setSla(String sla){
 		this.sla = sla;
 	}
 	

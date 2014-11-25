@@ -127,6 +127,9 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 					.getDateto(index));
 			ytblRequestCloseWorkOrder.setNodeId(closeWorkorderItem
 					.getNodeId(index));
+		
+			ytblRequestCloseWorkOrder.setMotivoOrden(closeWorkorderItem
+				     .getMotivoOrden(index));
 
 			interfaceWorkCloseOrder.saveYtblRequest(ytblRequestCloseWorkOrder);
 			saveDevicesMaterials(index);

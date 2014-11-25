@@ -3,6 +3,9 @@ package com.ec.tvcable.workorder.servicio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.ec.tvcable.workorder.TaskList;
 import com.ec.tvcable.workorder.AdditionalAttribute;
@@ -67,6 +70,62 @@ public class CloseWorkOrderItem {
 		return idTask;
 	}
 	
+	public Date getFinishDate(int index) throws Exception{
+		XMLGregorianCalendar finishDateXML;
+		try{
+			finishDateXML = taskLists.get(index).getFinishDate();
+			
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getFinishDate(int): "+e.toString());
+		}
+		return toDate(finishDateXML);
+	}
+	
+	public Date getRealFinishDate(int index) throws Exception{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS z");
+		try{
+			for (AdditionalAttribute additionalAttributeIterator : taskLists.get(index).getAttributes().getAttribute())
+			{
+				if (additionalAttributeIterator.getName().equals("REAL_END_DATE"))
+				{
+					return stringToXMLGregorianCalendar(additionalAttributeIterator.getFriendlyValue(),dateFormat);
+				}
+			}
+			
+		}
+		catch(NullPointerException e){
+			return null;
+		}
+		catch (Exception e){
+			throw new Exception("CloseWorkOrderItem.getRealFinishDate(int): "+e.toString());
+		}
+		return null;
+	}
+	
+    private static Date stringToXMLGregorianCalendar(String datetime, SimpleDateFormat sdf) 
+    {
+        try 
+        {
+        	Date date = sdf.parse(datetime);
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+	
+	public static Date toDate(XMLGregorianCalendar calendar){
+        if(calendar == null) {
+            return null;
+        }
+        return calendar.toGregorianCalendar().getTime();
+    }
+
+
 	public String getCparty() {
 		String cparty = new String();
 		
@@ -380,4 +439,23 @@ public class CloseWorkOrderItem {
 	public int getAdditionalAttributesSize(){
 		return additionalAttributes.size();
 	}
+	
+	public String getMotivoOrden(int index) throws Exception{
+		  String motivoOrden = new String();
+		  try{
+		   for(AdditionalAttribute attribute : taskLists.get(index).getAttributes().getAttribute() )
+		   {
+		    if (attribute.getName().equals("CAUSE_OF_FAILURE_FOR_SERVICE_CALL"))
+		     motivoOrden = attribute.getFriendlyValue();    
+		   }   
+		  }
+		  catch(NullPointerException e){
+		   return null;
+		  }
+		  catch (Exception e){
+		   throw new Exception("CloseWorkOrderItem.getMotivoOrden(int): "+e.toString());
+		  }
+
+		  return motivoOrden;
+		 }
 }
