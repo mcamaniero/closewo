@@ -62,7 +62,7 @@ public class CloseWorkOrderItem {
 			idTask = taskLists.get(index).getTaskId() ;
 		}
 		catch(NullPointerException e){
-			return null;
+			throw new Exception("CloseWorkOrderItem.getTaskId(int): Null Pointer Exception"+e.toString());
 		}
 		catch (Exception e){
 			throw new Exception("CloseWorkOrderItem.getTaskId(int): "+e.toString());
@@ -440,22 +440,22 @@ public class CloseWorkOrderItem {
 		return additionalAttributes.size();
 	}
 	
-	public String getMotivoOrden(int index) throws Exception{
-		  String motivoOrden = new String();
-		  try{
-		   for(AdditionalAttribute attribute : taskLists.get(index).getAttributes().getAttribute() )
-		   {
-		    if (attribute.getName().equals("CAUSE_OF_FAILURE_FOR_SERVICE_CALL"))
-		     motivoOrden = attribute.getFriendlyValue();    
-		   }   
-		  }
-		  catch(NullPointerException e){
-		   return null;
-		  }
-		  catch (Exception e){
-		   throw new Exception("CloseWorkOrderItem.getMotivoOrden(int): "+e.toString());
-		  }
-
-		  return motivoOrden;
-		 }
+	//public String getMotivoOrden(int index) throws Exception{
+	//	  String motivoOrden = new String();
+	//	  try{
+	//	   for(AdditionalAttribute attribute : taskLists.get(index).getAttributes().getAttribute() )
+	//	   {
+	//	    if (attribute.getName().equals("CAUSE_OF_FAILURE_FOR_SERVICE_CALL"))
+	//	     motivoOrden = attribute.getFriendlyValue();    
+	//	   }   
+	//	  }
+	//	  catch(NullPointerException e){
+	//	   return null;
+	//	  }
+	//	  catch (Exception e){
+	//	   throw new Exception("CloseWorkOrderItem.getMotivoOrden(int): "+e.toString());
+	//	  }
+	//
+	//	  return motivoOrden;
+	//	 }
 }

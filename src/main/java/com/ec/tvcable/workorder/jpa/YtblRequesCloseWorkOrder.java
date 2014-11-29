@@ -174,8 +174,8 @@ public class YtblRequesCloseWorkOrder {
 	@Column(name = "task_id")
 	private String taskId;
 	
-	@Column(name = "motivo_orden")
-	private String motivoOrden;
+	//@Column(name = "motivo_orden")
+	//private String motivoOrden;
 	
 	public Integer getId() {
 		return id;
@@ -593,13 +593,13 @@ public class YtblRequesCloseWorkOrder {
 		this.taskId = taskId;
 	}
 	
-	public String getMotivoOrden() {
-		return motivoOrden;
-   }
+//	public String getMotivoOrden() {
+//		return motivoOrden;
+//   }
 
-   public void setMotivoOrden(String motivoOrden) {
-	   this.motivoOrden = motivoOrden;
-  }
+//   public void setMotivoOrden(String motivoOrden) {
+//	   this.motivoOrden = motivoOrden;
+//  }
 	
 
 }

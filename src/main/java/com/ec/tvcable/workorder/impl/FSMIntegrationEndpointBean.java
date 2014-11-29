@@ -55,6 +55,8 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	private String workOrderId = new String();
 	// private String workOrderURL = new String();
 	private String status = new String();
+	private String taskNumber = new String();
+	int minIndex = 0;
 
 	@Override
 	public Result closeWorkOrder(WorkOrderItem workorderItemParameters) {
@@ -89,7 +91,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			processSignature = workOrderItem.getProcessSignature();
 			workOrderId = workOrderItem.getWorkOrderId();
 			status = workOrderItem.getStatus();
-			
+			taskNumber = getLastTask();
 
 			for (i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
 				saveCloseWorkOrder(i);
@@ -97,6 +99,44 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 		} catch (Exception e) {
 			throw new Exception("WorkOrderBean.saveCloseWorkorders(): "
 					+ e.toString());
+		}
+	}
+	
+	private String getLastTask() throws Exception{
+		int numberTemp;
+		int yearTemp;
+		int numberMax = 0;
+		int yearMax = 0;
+		int flag = 0;
+		int indexOf;
+		String taskTemp;
+		try {
+			for (int i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
+				taskTemp = closeWorkorderItem.getTaskId(i).replace("TASK/", "");
+				indexOf = taskTemp.indexOf("/");
+				numberTemp = Integer.parseInt(taskTemp.substring(0, indexOf));
+				yearTemp = Integer.parseInt(taskTemp.substring(indexOf+1));
+				if (yearTemp > yearMax)
+				{
+					yearMax = yearTemp;
+					numberMax = numberTemp;
+					flag = i;
+				}
+				else if (yearTemp == yearMax) 
+				{
+					if (numberTemp >= numberMax)
+					{
+						numberMax = numberTemp;
+						flag = i;
+					}					
+				}
+			}
+			System.out.println("Tarea Principal: "+taskNumber);
+			return closeWorkorderItem.getTaskId(flag);
+			
+		} catch (Exception e) {
+			throw new Exception(
+					"FSMIntegrationEndpointBean.getLastTask(): No puede obtener TaskId: "+ e.toString());
 		}
 	}
 
@@ -131,10 +171,11 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblRequestCloseWorkOrder.setCreateDate(closeWorkorderItem.getFinishDate(index));
 			ytblRequestCloseWorkOrder.setUpdateDate(closeWorkorderItem.getRealFinishDate(index));
 			
-			ytblRequestCloseWorkOrder.setMotivoOrden(closeWorkorderItem
-				     .getMotivoOrden(index));
+			//ytblRequestCloseWorkOrder.setMotivoOrden(closeWorkorderItem
+				//     .getMotivoOrden(index));
 
 			interfaceWorkCloseOrder.saveYtblRequest(ytblRequestCloseWorkOrder);
+			
 			saveDevicesMaterials(index);
 		} catch (Exception e) {
 			throw new Exception("WorkOrderBean.saveCloseWorkOrder(int): "
@@ -144,28 +185,25 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	}
 
 	private void saveDevicesMaterials(int index) throws Exception {
-		String taskId;
+		
+		if (minIndex == index) {
 
-		try {
-			for (Item itemIterator : closeWorkorderItem.getItems(index)) {
-				try {
-					taskId = closeWorkorderItem.getTaskId();
-				} catch (Exception e) {
-					throw new Exception(
-							"WorkOrderBean.saveDevicesMaterials(int): No puede obtener TaskId: "+ e.toString());
+			try {
+				for (Item itemIterator : closeWorkorderItem.getItems(index)) {
+					
+					System.out.println("Ingreso Principal: "+taskNumber);
+					if (itemIterator.getItemKey().getItemClass().toUpperCase()
+							.equals("EQUIPMENT")) {
+						saveDevice(itemIterator, taskNumber);
+					} else if (itemIterator.getItemKey().getItemClass()
+							.toUpperCase().equals("MATERIAL")) {
+						saveMaterial(itemIterator, taskNumber);
+					}
 				}
-				
-				if (itemIterator.getItemKey().getItemClass().toUpperCase()
-						.equals("EQUIPMENT")) {
-					saveDevice(itemIterator, taskId);
-				} else if (itemIterator.getItemKey().getItemClass()
-						.toUpperCase().equals("MATERIAL")) {
-					saveMaterial(itemIterator, taskId);
-				}
+			} catch (Exception e) {
+				throw new Exception("WorkOrderBean.saveDevicesMaterials(int): "
+						+ e.toString());
 			}
-		} catch (Exception e) {
-			throw new Exception("WorkOrderBean.saveDevicesMaterials(int): "
-					+ e.toString());
 		}
 	}
 
@@ -179,7 +217,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			ytblDevice.setState(item.getStatus());
 			ytblDevice.setcreateDate(new Date());
 			ytblDevice.setresourceId(item.getItemKey().getItemId());
-			
+				
 			try{
 				for (ItemKey itemKey : item.getRelatedItems().getItemKey()) {
 				if (itemKey.getItemClass().toUpperCase().equals("SERVICE"))
