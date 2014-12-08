@@ -131,7 +131,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 					}					
 				}
 			}
-			System.out.println("Tarea Principal: "+taskNumber);
+			System.out.println("Tarea Principal: "+closeWorkorderItem.getTaskId(flag));
 			return closeWorkorderItem.getTaskId(flag);
 			
 		} catch (Exception e) {
@@ -200,7 +200,10 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 						saveMaterial(itemIterator, taskNumber);
 					}
 				}
-			} catch (Exception e) {
+			} catch (NullPointerException npe) {
+				System.out.println("Tarea: "+taskNumber+" sin Items");
+			}
+			catch (Exception e) {
 				throw new Exception("WorkOrderBean.saveDevicesMaterials(int): "
 						+ e.toString());
 			}
