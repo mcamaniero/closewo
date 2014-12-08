@@ -55,6 +55,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	private String workOrderId = new String();
 	private String taskNumber = new String();
 	private String status = new String();
+	private int maxIndex;
 	
 
 	@Override
@@ -183,30 +184,30 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	}
 
 	private void saveDevicesMaterials(int index) throws Exception {
-		String taskId;
+		if (maxIndex == index) {
 
-		try {
-			for (Item itemIterator : closeWorkorderItem.getItems(index)) {
-				try {
-					taskId = closeWorkorderItem.getTaskId();
-				} catch (Exception e) {
-					throw new Exception(
-							"WorkOrderBean.saveDevicesMaterials(int): No puede obtener TaskId: "+ e.toString());
+			try {
+				for (Item itemIterator : closeWorkorderItem.getItems(index)) {
+					
+					System.out.println("Ingreso Principal: "+taskNumber);
+					if (itemIterator.getItemKey().getItemClass().toUpperCase()
+							.equals("EQUIPMENT")) 
+						saveDevice(itemIterator, taskNumber);
+					 else if (itemIterator.getItemKey().getItemClass()
+							.toUpperCase().equals("MATERIAL")) 
+						saveMaterial(itemIterator, taskNumber);
+					
 				}
-				
-				if (itemIterator.getItemKey().getItemClass().toUpperCase()
-						.equals("EQUIPMENT")) {
-					saveDevice(itemIterator, taskId);
-				} else if (itemIterator.getItemKey().getItemClass()
-						.toUpperCase().equals("MATERIAL")) {
-					saveMaterial(itemIterator, taskId);
-				}
+			} catch (NullPointerException npe) {
+				System.out.println("Tarea: "+taskNumber+" sin Items");
 			}
-		} catch (Exception e) {
-			throw new Exception("WorkOrderBean.saveDevicesMaterials(int): "
-					+ e.toString());
+			catch (Exception e) {
+				throw new Exception("WorkOrderBean.saveDevicesMaterials(int): "
+						+ e.toString());
+			}
 		}
 	}
+
 
 	private void saveDevice(Item item, String taskId) throws Exception {
 		Ytbl_Device ytblDevice = new Ytbl_Device();
