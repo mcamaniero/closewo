@@ -53,8 +53,9 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	private String processId = new String();
 	private String processSignature = new String();
 	private String workOrderId = new String();
-	// private String workOrderURL = new String();
+	private String taskNumber = new String();
 	private String status = new String();
+	
 
 	@Override
 	public Result closeWorkOrder(WorkOrderItem workorderItemParameters) {
@@ -89,7 +90,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 			processSignature = workOrderItem.getProcessSignature();
 			workOrderId = workOrderItem.getWorkOrderId();
 			status = workOrderItem.getStatus();
-			
+			taskNumber = getLastTask();
 
 			for (i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
 				saveCloseWorkOrder(i);
@@ -97,6 +98,44 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 		} catch (Exception e) {
 			throw new Exception("WorkOrderBean.saveCloseWorkorders(): "
 					+ e.toString());
+		}
+	}
+	
+	private String getLastTask() throws Exception{
+		int numberTemp;
+		int yearTemp;
+		int numberMax = 0;
+		int yearMax = 0;
+		int flag = 0;
+		int indexOf;
+		String taskTemp;
+		try {
+			for (int i = 0; i < closeWorkorderItem.getTaskSize(); i++) {
+				taskTemp = closeWorkorderItem.getTaskId(i).replace("TASK/", "");
+				indexOf = taskTemp.indexOf("/");
+				numberTemp = Integer.parseInt(taskTemp.substring(0, indexOf));
+				yearTemp = Integer.parseInt(taskTemp.substring(indexOf+1));
+				if (yearTemp > yearMax)
+				{
+					yearMax = yearTemp;
+					numberMax = numberTemp;
+					flag = i;
+				}
+				else if (yearTemp == yearMax) 
+				{
+					if (numberTemp >= numberMax)
+					{
+						numberMax = numberTemp;
+						flag = i;
+					}					
+				}
+			}
+			System.out.println("Tarea Principal: "+closeWorkorderItem.getTaskId(flag));
+			return closeWorkorderItem.getTaskId(flag);
+			
+		} catch (Exception e) {
+			throw new Exception(
+					"FSMIntegrationEndpointBean.getLastTask(): No puede obtener TaskId: "+ e.toString());
 		}
 	}
 
