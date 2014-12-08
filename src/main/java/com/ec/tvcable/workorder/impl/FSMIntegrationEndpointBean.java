@@ -56,7 +56,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 	// private String workOrderURL = new String();
 	private String status = new String();
 	private String taskNumber = new String();
-	int minIndex = 0;
+	int maxIndex = 0;
 
 	@Override
 	public Result closeWorkOrder(WorkOrderItem workorderItemParameters) {
@@ -132,6 +132,7 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 				}
 			}
 			System.out.println("Tarea Principal: "+closeWorkorderItem.getTaskId(flag));
+			maxIndex = flag;
 			return closeWorkorderItem.getTaskId(flag);
 			
 		} catch (Exception e) {
@@ -186,19 +187,19 @@ public class FSMIntegrationEndpointBean implements FSMIntegrationEndpoint {
 
 	private void saveDevicesMaterials(int index) throws Exception {
 		
-		if (minIndex == index) {
+		if (maxIndex == index) {
 
 			try {
 				for (Item itemIterator : closeWorkorderItem.getItems(index)) {
 					
 					System.out.println("Ingreso Principal: "+taskNumber);
 					if (itemIterator.getItemKey().getItemClass().toUpperCase()
-							.equals("EQUIPMENT")) {
+							.equals("EQUIPMENT")) 
 						saveDevice(itemIterator, taskNumber);
-					} else if (itemIterator.getItemKey().getItemClass()
-							.toUpperCase().equals("MATERIAL")) {
+					 else if (itemIterator.getItemKey().getItemClass()
+							.toUpperCase().equals("MATERIAL")) 
 						saveMaterial(itemIterator, taskNumber);
-					}
+					
 				}
 			} catch (NullPointerException npe) {
 				System.out.println("Tarea: "+taskNumber+" sin Items");
