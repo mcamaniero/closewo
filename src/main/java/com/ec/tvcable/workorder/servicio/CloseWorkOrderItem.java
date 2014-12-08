@@ -141,7 +141,7 @@ public class CloseWorkOrderItem {
 			cparty = taskLists.get(index).getCustomer().getValue().getCustomerId();
 		}
 		catch(NullPointerException e){
-			return null;
+			return "0";
 		}
 		catch (Exception e){
 			throw new Exception("CloseWorkOrderItem.getCparty(int): "+e.toString());
